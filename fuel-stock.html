@@ -1,62 +1,468 @@
-async function saveStock(tid){
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Fuel Stock | Nyambo Fuel Management</title>
 
-let o=n($('op').value);
-let d=n($('dd').value);
-let s=n($('ss').value);
-let c=n($('cl').value);
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-if(c<0)
-return alert(
-'Closing stock cannot be negative.'
-);
+<style>
+*{box-sizing:border-box}
 
-let dip=
-$('dip').value===''
-?null
-:n($('dip').value);
-
-let stockDate=$('sd').value;
-
-let r=
-await db
-.from('daily_fuel_stock')
-.upsert({
-
-tank_id:tid,
-
-stock_date:stockDate,
-
-opening_litres:o,
-
-deliveries_litres:d,
-
-sales_litres:s,
-
-closing_litres:c,
-
-physical_dip_litres:dip,
-
-variance_litres:
-dip===null
-?null
-:dip-c,
-
-notes:
-$('notes').value||null
-
-},{
-onConflict:'tank_id,stock_date'
-});
-
-if(r.error)
-return alert(r.error.message);
-
-$('modal').classList.remove('show');
-
-await load();
-
-alert(
-'Daily stock saved successfully.'
-);
-
+body{
+margin:0;
+font-family:Arial,sans-serif;
+background:#f5f7fa;
+color:#172033
 }
+
+.side{
+position:fixed;
+left:0;
+top:0;
+bottom:0;
+width:230px;
+background:#111b29;
+color:#fff;
+z-index:5;
+overflow:auto
+}
+
+.brand{
+background:#e20d18;
+padding:18px;
+font-weight:700;
+font-size:20px
+}
+
+.brand small{
+display:block;
+font-size:10px
+}
+
+.nav a{
+display:block;
+color:#ddd;
+text-decoration:none;
+padding:11px 14px
+}
+
+.nav a.active{
+background:#e20d18;
+color:#fff
+}
+
+.main{
+margin-left:230px;
+padding:20px
+}
+
+.mobile{
+display:none
+}
+
+.top{
+display:flex;
+justify-content:space-between;
+align-items:center;
+gap:12px
+}
+
+.cards,
+.garagegrid,
+.fuelrow,
+.summary{
+display:grid;
+gap:12px
+}
+
+.cards{
+grid-template-columns:repeat(4,1fr);
+margin:15px 0
+}
+
+.garagegrid{
+grid-template-columns:repeat(2,1fr)
+}
+
+.fuelrow{
+grid-template-columns:1fr 1fr
+}
+
+.summary{
+grid-template-columns:repeat(4,1fr);
+margin:15px 0
+}
+
+.card,
+.garage,
+.panel,
+.tank,
+.mini{
+background:#fff;
+border:1px solid #e1e6ec;
+border-radius:12px;
+padding:15px
+}
+
+.label{
+font-size:11px;
+font-weight:bold;
+color:#667085
+}
+
+.value{
+font-size:24px;
+font-weight:bold;
+margin-top:7px
+}
+
+.green{
+color:#239447
+}
+
+.red{
+color:#d71920
+}
+
+.yellow{
+color:#b77900
+}
+
+.blue{
+color:#2563eb
+}
+
+.btn{
+border:0;
+background:#e20d18;
+color:#fff;
+border-radius:8px;
+padding:10px 13px;
+font-weight:bold;
+cursor:pointer
+}
+
+.dark{
+background:#172033
+}
+
+.bluebtn{
+background:#2563eb
+}
+
+/* PETROL = GREEN */
+.petrolbtn{
+background:#239447;
+color:#fff
+}
+
+/* DIESEL = PURPLE */
+.dieselbtn{
+background:#7b3fc6;
+color:#fff
+}
+
+/* PETROL TANK = GREEN */
+.tank.petrol{
+border-left:5px solid #239447;
+background:#f1faf4
+}
+
+/* DIESEL TANK = PURPLE */
+.tank.diesel{
+border-left:5px solid #7b3fc6;
+background:#f7f1fc
+}
+
+.bar{
+height:10px;
+background:#e9edf1;
+border-radius:8px;
+overflow:hidden;
+margin:9px 0
+}
+
+/* PETROL BAR = GREEN */
+.bar span{
+display:block;
+height:100%;
+background:#239447
+}
+
+/* DIESEL BAR = PURPLE */
+.diesel .bar span{
+background:#7b3fc6
+}
+
+.status{
+display:inline-block;
+padding:6px 8px;
+border-radius:7px;
+font-size:11px;
+font-weight:bold;
+background:#def7e7;
+color:#18743a
+}
+
+.status.low{
+background:#fff0d2;
+color:#9a6500
+}
+
+.status.critical{
+background:#ffe3e3;
+color:#b91c1c
+}
+
+.actions{
+display:flex;
+gap:8px;
+flex-wrap:wrap;
+margin-top:12px
+}
+
+.table{
+overflow:auto
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+font-size:12px
+}
+
+th,td{
+padding:9px;
+border-bottom:1px solid #eee;
+text-align:left;
+white-space:nowrap
+}
+
+th{
+background:#f1f3f5
+}
+
+.modal{
+display:none;
+position:fixed;
+inset:0;
+background:#0008;
+align-items:center;
+justify-content:center;
+z-index:20
+}
+
+.modal.show{
+display:flex
+}
+
+.box{
+background:#fff;
+padding:20px;
+border-radius:14px;
+width:min(900px,94%);
+max-height:92vh;
+overflow:auto
+}
+
+.close{
+float:right;
+border:0;
+background:none;
+font-size:28px;
+cursor:pointer
+}
+
+label{
+font-size:12px;
+font-weight:bold;
+color:#667085
+}
+
+input,
+select,
+textarea{
+width:100%;
+padding:11px;
+margin:5px 0 12px;
+border:1px solid #d8dde5;
+border-radius:7px;
+font:inherit
+}
+
+.hint{
+font-size:12px;
+color:#667085
+}
+
+@media(max-width:800px){
+
+.side{
+transform:translateX(-100%);
+transition:.2s
+}
+
+.side.open{
+transform:translateX(0)
+}
+
+.main{
+margin:0;
+padding:12px
+}
+
+.mobile{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:12px
+}
+
+.mobile button{
+font-size:24px;
+background:#fff;
+border:1px solid #ddd;
+border-radius:7px;
+padding:5px 10px
+}
+
+.cards,
+.garagegrid{
+grid-template-columns:1fr 1fr
+}
+
+.fuelrow,
+.summary{
+grid-template-columns:1fr 1fr
+}
+}
+
+@media(max-width:500px){
+
+.cards,
+.garagegrid,
+.fuelrow,
+.summary{
+grid-template-columns:1fr
+}
+
+.top{
+align-items:flex-start
+}
+}
+</style>
+</head>
+
+<body>
+
+<aside class="side" id="side">
+
+<div class="brand">
+⛽ NYAMBO
+<small>FUEL MANAGEMENT</small>
+</div>
+
+<nav class="nav">
+
+<a href="index.html">Dashboard</a>
+
+<a href="pump-readings.html">
+Pump Meter Readings
+</a>
+
+<a href="credit-customers.html">
+Credit Customers
+</a>
+
+<a href="credit-sale.html">
+Credit Sale
+</a>
+
+<a href="payment.html">
+Payment
+</a>
+
+<a href="fuel-purchase.html">
+Fuel Purchase
+</a>
+
+<a class="active" href="fuel-stock.html">
+Fuel Stock and Levels
+</a>
+
+<a href="expenses.html">
+Expenses
+</a>
+
+<a href="reports.html">
+Reports
+</a>
+
+</nav>
+
+</aside>
+
+<main class="main">
+
+<div class="mobile">
+
+<button onclick="side.classList.toggle('open')">
+☰
+</button>
+
+<b>NYAMBO FUEL MANAGEMENT</b>
+
+<span>⛽</span>
+
+</div>
+
+<div class="top">
+
+<div>
+
+<h1>Fuel Stock & Levels</h1>
+
+<p>
+Open each garage to see fuel received, sold,
+current stock and when to refill.
+</p>
+
+</div>
+
+<button class="btn" onclick="load()">
+↻ Refresh
+</button>
+
+</div>
+
+<div id="msg"></div>
+
+<div class="cards">
+
+<div class="card">
+<div class="label">TOTAL CAPACITY</div>
+<div class="value" id="capacity">0 L</div>
+</div>
+
+<div class="card">
+<div class="label">CURRENT STOCK</div>
+<div class="value green" id="stock">0 L</div>
+</div>
+
+<div class="card">
+<div class="label">GARAGES LOW</div>
+<div class="value yellow" id="low">0</div>
+</div>
+
+<div class="card">
+<div class="label">CRITICAL TANKS</div>
+<div class="value red" id="critical">0</div>
+</div>
+
+</div>
+
+<div class="panel">
+
+<h2>
