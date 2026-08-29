@@ -10,124 +10,18 @@
 <style>
 *{box-sizing:border-box}
 body{margin:0;font-family:Arial,sans-serif;background:#f5f7fa;color:#172033}
-.side{position:fixed;left:0;top:0;bottom:0;width:230px;background:#111b29;color:#fff;z-index:5;overflow:auto}
-.brand{background:#e20d18;padding:18px;font-weight:700;font-size:20px}.brand small{display:block;font-size:10px}
-.nav a{display:block;color:#ddd;text-decoration:none;padding:11px 14px}.nav a.active{background:#e20d18;color:#fff}
-.main{margin-left:230px;padding:20px}.mobile{display:none}.top{display:flex;justify-content:space-between;align-items:center;gap:12px}
-.cards,.garagegrid,.fuelrow,.summary{display:grid;gap:12px}.cards{grid-template-columns:repeat(4,1fr);margin:15px 0}.garagegrid{grid-template-columns:repeat(2,1fr)}.fuelrow{grid-template-columns:1fr 1fr}.summary{grid-template-columns:repeat(4,1fr);margin:15px 0}
-.card,.garage,.panel,.tank,.mini{background:#fff;border:1px solid #e1e6ec;border-radius:12px;padding:15px}.label{font-size:11px;font-weight:bold;color:#667085}.value{font-size:24px;font-weight:bold;margin-top:7px}
-.green{color:#239447}.red{color:#d71920}.yellow{color:#b77900}.blue{color:#2563eb}.btn{border:0;background:#e20d18;color:#fff;border-radius:8px;padding:10px 13px;font-weight:bold;cursor:pointer}.dark{background:#172033}.bluebtn{background:#2563eb}.petrolbtn{background:#239447;color:#fff}.dieselbtn{background:#7b3fc6;color:#fff}
-.tank.petrol{border-left:5px solid #239447;background:#f1faf4}.tank.diesel{border-left:5px solid #7b3fc6;background:#f7f1fc}
-.bar{height:10px;background:#e9edf1;border-radius:8px;overflow:hidden;margin:9px 0}.bar span{display:block;height:100%;background:#239447}.diesel .bar span{background:#7b3fc6}
-.status{display:inline-block;padding:6px 8px;border-radius:7px;font-size:11px;font-weight:bold;background:#def7e7;color:#18743a}.status.low{background:#fff0d2;color:#9a6500}.status.critical{background:#ffe3e3;color:#b91c1c}
-.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.table{overflow:auto}table{width:100%;border-collapse:collapse;font-size:12px}th,td{padding:9px;border-bottom:1px solid #eee;text-align:left;white-space:nowrap}th{background:#f1f3f5}
-.modal{display:none;position:fixed;inset:0;background:#0008;align-items:center;justify-content:center;z-index:20}.modal.show{display:flex}.box{background:#fff;padding:20px;border-radius:14px;width:min(900px,94%);max-height:92vh;overflow:auto}.close{float:right;border:0;background:none;font-size:28px;cursor:pointer}
-label{font-size:12px;font-weight:bold;color:#667085}input,select,textarea{width:100%;padding:11px;margin:5px 0 12px;border:1px solid #d8dde5;border-radius:7px;font:inherit}.hint{font-size:12px;color:#667085}
-@media(max-width:800px){.side{transform:translateX(-100%);transition:.2s}.side.open{transform:translateX(0)}.main{margin:0;padding:12px}.mobile{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}.mobile button{font-size:24px;background:#fff;border:1px solid #ddd;border-radius:7px;padding:5px 10px}.cards,.garagegrid{grid-template-columns:1fr 1fr}.fuelrow,.summary{grid-template-columns:1fr 1fr}}
-@media(max-width:500px){.cards,.garagegrid,.fuelrow,.summary{grid-template-columns:1fr}.top{align-items:flex-start}}
+.side{position:fixed;left:0;top:0;bottom:0;width:230px;background:#111b29;color:#fff;z-index:5;overflow:auto}.brand{background:#e20d18;padding:18px;font-weight:700;font-size:20px}.brand small{display:block;font-size:10px}.nav a{display:block;color:#ddd;text-decoration:none;padding:11px 14px}.nav a.active{background:#e20d18;color:#fff}.main{margin-left:230px;padding:20px}.mobile{display:none}.top{display:flex;justify-content:space-between;align-items:center;gap:12px}.cards,.garagegrid,.fuelrow,.summary{display:grid;gap:12px}.cards{grid-template-columns:repeat(4,1fr);margin:15px 0}.garagegrid{grid-template-columns:repeat(2,1fr)}.fuelrow{grid-template-columns:1fr 1fr}.summary{grid-template-columns:repeat(4,1fr);margin:15px 0}.card,.garage,.panel,.tank,.mini{background:#fff;border:1px solid #e1e6ec;border-radius:12px;padding:15px}.label{font-size:11px;font-weight:bold;color:#667085}.value{font-size:24px;font-weight:bold;margin-top:7px}.green{color:#239447}.red{color:#d71920}.yellow{color:#b77900}.blue{color:#2563eb}.btn{border:0;background:#e20d18;color:#fff;border-radius:8px;padding:10px 13px;font-weight:bold;cursor:pointer}.dark{background:#172033}.bluebtn{background:#2563eb}.petrolbtn{background:#239447;color:#fff}.dieselbtn{background:#7b3fc6;color:#fff}.tank.petrol{border-left:5px solid #239447;background:#f1faf4}.tank.diesel{border-left:5px solid #7b3fc6;background:#f7f1fc}.bar{height:10px;background:#e9edf1;border-radius:8px;overflow:hidden;margin:9px 0}.bar span{display:block;height:100%;background:#239447}.diesel .bar span{background:#7b3fc6}.status{display:inline-block;padding:6px 8px;border-radius:7px;font-size:11px;font-weight:bold;background:#def7e7;color:#18743a}.status.low{background:#fff0d2;color:#9a6500}.status.critical{background:#ffe3e3;color:#b91c1c}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.table{overflow:auto}table{width:100%;border-collapse:collapse;font-size:12px}th,td{padding:9px;border-bottom:1px solid #eee;text-align:left;white-space:nowrap}th{background:#f1f3f5}.modal{display:none;position:fixed;inset:0;background:#0008;align-items:center;justify-content:center;z-index:20}.modal.show{display:flex}.box{background:#fff;padding:20px;border-radius:14px;width:min(900px,94%);max-height:92vh;overflow:auto}.close{float:right;border:0;background:none;font-size:28px;cursor:pointer}label{font-size:12px;font-weight:bold;color:#667085}input,select,textarea{width:100%;padding:11px;margin:5px 0 12px;border:1px solid #d8dde5;border-radius:7px;font:inherit}.hint{font-size:12px;color:#667085}
+@media(max-width:800px){.side{transform:translateX(-100%);transition:.2s}.side.open{transform:translateX(0)}.main{margin:0;padding:12px}.mobile{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}.mobile button{font-size:24px;background:#fff;border:1px solid #ddd;border-radius:7px;padding:5px 10px}.cards,.garagegrid{grid-template-columns:1fr 1fr}.fuelrow,.summary{grid-template-columns:1fr 1fr}}@media(max-width:500px){.cards,.garagegrid,.fuelrow,.summary{grid-template-columns:1fr}.top{align-items:flex-start}}
 </style>
 </head>
 <body>
-<aside class="side" id="side">
-<div class="brand">⛽ NYAMBO<small>FUEL MANAGEMENT</small></div>
-<nav class="nav">
-<a href="index.html">Dashboard</a>
-<a href="pump-readings.html">Pump Meter Readings</a>
-<a href="credit-customers.html">Credit Customers</a>
-<a href="credit-sale.html">Credit Sale</a>
-<a href="payment.html">Payment</a>
-<a href="fuel-purchase.html">Fuel Purchase</a>
-<a class="active" href="fuel-stock.html">Fuel Stock and Levels</a>
-<a href="expenses.html">Expenses</a>
-<a href="reports.html">Reports</a>
-</nav>
-</aside>
-<main class="main">
-<div class="mobile"><button onclick="side.classList.toggle('open')">☰</button><b>NYAMBO FUEL MANAGEMENT</b><span>⛽</span></div>
-<div class="top"><div><h1>Fuel Stock & Levels</h1><p>Open each garage to see fuel received, sold, current stock and when to refill.</p></div><button class="btn" onclick="load()">↻ Refresh</button></div>
-<div id="msg"></div>
-<div class="cards"><div class="card"><div class="label">TOTAL CAPACITY</div><div class="value" id="capacity">0 L</div></div><div class="card"><div class="label">CURRENT STOCK</div><div class="value green" id="stock">0 L</div></div><div class="card"><div class="label">GARAGES LOW</div><div class="value yellow" id="low">0</div></div><div class="card"><div class="label">CRITICAL TANKS</div><div class="value red" id="critical">0</div></div></div>
-<div class="panel"><h2>Garage Fuel Levels</h2><div class="hint">Petrol is green. Diesel is purple.</div><div id="garages" class="garagegrid"></div></div>
-<div class="panel" style="margin-top:15px"><h2>Daily Stock Records</h2><div class="table"><table><thead><tr><th>Date</th><th>Garage</th><th>Fuel</th><th>Opening</th><th>Received</th><th>Sold</th><th>Closing</th><th>Dip</th><th>Variance</th></tr></thead><tbody id="history"></tbody></table></div></div>
-</main>
-
+<aside class="side" id="side"><div class="brand">⛽ NYAMBO<small>FUEL MANAGEMENT</small></div><nav class="nav"><a href="index.html">Dashboard</a><a href="pump-readings.html">Pump Meter Readings</a><a href="credit-customers.html">Credit Customers</a><a href="credit-sale.html">Credit Sale</a><a href="payment.html">Payment</a><a href="fuel-purchase.html">Fuel Purchase</a><a class="active" href="fuel-stock.html">Fuel Stock and Levels</a><a href="expenses.html">Expenses</a><a href="reports.html">Reports</a></nav></aside>
+<main class="main"><div class="mobile"><button onclick="side.classList.toggle('open')">☰</button><b>NYAMBO FUEL MANAGEMENT</b><span>⛽</span></div><div class="top"><div><h1>Fuel Stock & Levels</h1><p>Open each garage to see fuel received, sold, current stock and when to refill.</p></div><button class="btn" onclick="load()">↻ Refresh</button></div><div id="msg"></div><div class="cards"><div class="card"><div class="label">TOTAL CAPACITY</div><div class="value" id="capacity">0 L</div></div><div class="card"><div class="label">CURRENT STOCK</div><div class="value green" id="stock">0 L</div></div><div class="card"><div class="label">GARAGES LOW</div><div class="value yellow" id="low">0</div></div><div class="card"><div class="label">CRITICAL TANKS</div><div class="value red" id="critical">0</div></div></div><div class="panel"><h2>Garage Fuel Levels</h2><div class="hint">Petrol is green. Diesel is purple.</div><div id="garages" class="garagegrid"></div></div><div class="panel" style="margin-top:15px"><h2>Daily Stock Records</h2><div class="table"><table><thead><tr><th>Date</th><th>Garage</th><th>Fuel</th><th>Opening</th><th>Received</th><th>Sold</th><th>Closing</th><th>Dip</th><th>Variance</th></tr></thead><tbody id="history"></tbody></table></div></div></main>
 <div class="modal" id="modal"><div class="box"><button class="close" onclick="closeModal()">×</button><h2>Enter Daily Stock</h2><div id="modalGarage" class="hint"></div><label>Date</label><input id="sd" type="date"><div class="fuelrow"><div><label>Opening litres</label><input id="op" type="number" min="0" step="0.01"></div><div><label>Deliveries / received</label><input id="dd" type="number" min="0" step="0.01"></div><div><label>Sales / used</label><input id="ss" type="number" min="0" step="0.01"></div><div><label>Closing litres</label><input id="cl" type="number" min="0" step="0.01"></div></div><label>Physical dip litres (optional)</label><input id="dip" type="number" min="0" step="0.01"><label>Notes</label><textarea id="notes" rows="3"></textarea><button id="saveBtn" class="btn">Save Daily Stock</button></div></div>
-
 <script>
-const SUPABASE_URL='https://dyqwsydxyhomudujumxs.supabase.co';
-const SUPABASE_KEY='sb_publishable_rH-erFTla9rTfqA5eGwwNA_ad0BgDq6';
-const db=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
-let S=[],T=[],D=[],selectedTank=null;
-const $=id=>document.getElementById(id);
-const n=v=>Number(v||0);
-function esc(v){return String(v??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));}
-function fuelName(v){return String(v||'').toLowerCase()==='diesel'?'Diesel':'Petrol'}
-function garageName(id){let s=S.find(x=>String(x.id)===String(id));return s?s.name:'Unknown Garage'}
-function tFuelName(tid){let t=T.find(x=>String(x.id)===String(tid));return t?fuelName(t.fuel_type):'fuel'}
-function closeModal(){$('modal').classList.remove('show')}
-
-function openStock(tid){
- selectedTank=tid;
- let t=T.find(x=>String(x.id)===String(tid));
- if(!t)return;
- $('modalGarage').textContent=garageName(t.station_id)+' — '+fuelName(t.fuel_type);
- $('sd').value=new Date().toISOString().slice(0,10);
- $('op').value='';$('dd').value='';$('ss').value='';$('cl').value='';$('dip').value='';$('notes').value='';
- $('saveBtn').onclick=()=>saveStock(tid);
- $('modal').classList.add('show');
-}
-
-async function saveStock(tid){
- let o=n($('op').value),d=n($('dd').value),s=n($('ss').value),c=n($('cl').value);
- if(c<0)return alert('Closing stock cannot be negative.');
- let dip=$('dip').value===''?null:n($('dip').value);
- let stockDate=$('sd').value;
- if(!stockDate)return alert('Please select a date.');
- let r=await db.from('daily_fuel_stock').upsert({
-   tank_id:tid,stock_date:stockDate,opening_litres:o,deliveries_litres:d,sales_litres:s,closing_litres:c,
-   physical_dip_litres:dip,variance_litres:dip===null?null:dip-c,notes:$('notes').value.trim()||null
- },{onConflict:'tank_id,stock_date'});
- if(r.error){console.error(r.error);return alert('Could not save stock: '+r.error.message)}
- closeModal();await load();alert('Daily '+tFuelName(tid)+' stock saved successfully.');
-}
-
-async function load(){
- $('msg').innerHTML='<p class="hint">Loading fuel stock...</p>';
- try{
-  const r=await Promise.all([
-   db.from('stations').select('*').order('name'),
-   db.from('fuel_tanks').select('*').order('station_id'),
-   db.from('daily_fuel_stock').select('*').order('stock_date',{ascending:false}).limit(300)
-  ]);
-  if(r.some(x=>x.error))throw new Error(r.find(x=>x.error)?.error.message||'Database error');
-  S=r[0].data||[];T=r[1].data||[];D=r[2].data||[];
-  render();$('msg').innerHTML='';
- }catch(e){console.error(e);$('msg').innerHTML='<p class="hint">Could not load fuel stock: '+esc(e.message)+'</p>'}
-}
-
-function latestForTank(tid){return D.find(x=>String(x.tank_id)===String(tid))||null}
-function render(){
- let totalCap=0,totalStock=0,low=0,critical=0;
- let garageMap={};
- T.forEach(t=>{
-  let cap=n(t.capacity_litres||t.capacity||0),rec=latestForTank(t.id);let stock=rec? n(rec.closing_litres):0;
-  totalCap+=cap;totalStock+=stock;
-  let pct=cap?Math.max(0,Math.min(100,stock/cap*100)):0;
-  let level=pct<=10?'critical':pct<=25?'low':'ok';
-  if(level==='low'||level==='critical')low++;if(level==='critical')critical++;
-  if(!garageMap[t.station_id])garageMap[t.station_id]=[];garageMap[t.station_id].push({t,rec,stock,pct,level});
- });
- $('capacity').textContent=totalCap.toLocaleString()+' L';$('stock').textContent=totalStock.toLocaleString()+' L';$('low').textContent=low;$('critical').textContent=critical;
- $('garages').innerHTML=S.map(st=>{
-  let tanks=garageMap[st.id]||[];
-  return '<div class="garage"><h3>'+esc(st.name||'Garage')+'</h3>'+(!tanks.length?'<p class="hint">No tanks configured.</p>':tanks.map(x=>{
-   let cls=fuelName(x.t.fuel_type).toLowerCase(),status=x.level==='critical'?'CRITICAL':x.level==='low'?'LOW':'OK';
-   return '<div class="tank '+cls+'" style="margin-top:10px"><b>'+fuelName(x.t.fuel_type)+'</b><div class="value">'+x.stock.toLocaleString()+' L</div><div class="hint">Capacity: '+n(x.t.capacity_litres||x.t.capacity).toLocaleString()+' L</div><div class="bar"><span style="width:'+x.pct+'%"></span></div><span class="status '+(x.level==='low'?'low':'')+(x.level==='critical'?' critical':'')+'">'+status+' · '+x.pct.toFixed(0)+'%</span><div class="actions"><button class="btn '+(cls==='petrol'?'petrolbtn':'dieselbtn')+'" onclick="openStock(\''+x.t.id+'\')">Enter Daily Stock</button></div></div>'
-  }).join('')+'</div>';
- }).join('');
- $('history').innerHTML=D.map(r=>'<tr><td>'+esc(r.stock_date)+'</td><td>'+esc(garageName(r.station_id))+'</td><td>'+esc(tFuelName(r.tank_id))+'</td><td>'+n(r.opening_litres).toLocaleString()+' L</td><td>'+n(r.deliveries_litres).toLocaleString()+' L</td><td>'+n(r.sales_litres).toLocaleString()+' L</td><td>'+n(r.closing_litres).toLocaleString()+' L</td><td>'+(r.physical_dip_litres==null?'—':n(r.physical_dip_litres).toLocaleString()+' L')+'</td><td>'+(r.variance_litres==null?'—':n(r.variance_litres).toLocaleString()+' L')+'</td></tr>').join('')||'<tr><td colspan="9">No daily stock records yet.</td></tr>';
-}
-load();
-</script>
-</body>
-</html>
+const SUPABASE_URL='https://dyqwsydxyhomudujumxs.supabase.co';const SUPABASE_KEY='sb_publishable_rH-erFTla9rTfqA5eGwwNA_ad0BgDq6';const db=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);let S=[],T=[],D=[],selectedTank=null;const $=id=>document.getElementById(id);const n=v=>Number(v||0);function esc(v){return String(v??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));}function fuelName(v){return String(v||'').toLowerCase()==='diesel'?'Diesel':'Petrol'}function garageName(id){let s=S.find(x=>String(x.id)===String(id));return s?s.name:'Unknown Garage'}function tFuelName(tid){let t=T.find(x=>String(x.id)===String(tid));return t?fuelName(t.fuel_type):'fuel'}function closeModal(){$('modal').classList.remove('show')}
+function openStock(tid){selectedTank=tid;let t=T.find(x=>String(x.id)===String(tid));if(!t)return;$('modalGarage').textContent=garageName(t.station_id)+' — '+fuelName(t.fuel_type);$('sd').value=new Date().toISOString().slice(0,10);$('op').value='';$('dd').value='';$('ss').value='';$('cl').value='';$('dip').value='';$('notes').value='';$('saveBtn').onclick=()=>saveStock(tid);$('modal').classList.add('show')}
+async function saveStock(tid){let o=n($('op').value),d=n($('dd').value),s=n($('ss').value),c=n($('cl').value);if(c<0)return alert('Closing stock cannot be negative.');let dip=$('dip').value===''?null:n($('dip').value);let stockDate=$('sd').value;if(!stockDate)return alert('Please select a date.');let r=await db.from('daily_fuel_stock').upsert({tank_id:tid,stock_date:stockDate,opening_litres:o,deliveries_litres:d,sales_litres:s,closing_litres:c,physical_dip_litres:dip,variance_litres:dip===null?null:dip-c,notes:$('notes').value.trim()||null},{onConflict:'tank_id,stock_date'});if(r.error){console.error(r.error);return alert('Could not save stock: '+r.error.message)}closeModal();await load();alert('Daily '+tFuelName(tid)+' stock saved successfully.')}
+async function load(){$('msg').innerHTML='<p class="hint">Loading fuel stock...</p>';try{const r=await Promise.all([db.from('stations').select('*').order('name'),db.from('fuel_tanks').select('*').order('station_id'),db.from('daily_fuel_stock').select('*').order('stock_date',{ascending:false}).limit(300)]);if(r.some(x=>x.error))throw new Error(r.find(x=>x.error)?.error.message||'Database error');S=r[0].data||[];T=r[1].data||[];D=r[2].data||[];render();$('msg').innerHTML=''}catch(e){console.error(e);$('msg').innerHTML='<p class="hint">Could not load fuel stock: '+esc(e.message)+'</p>'}}
+function latestForTank(tid){return D.find(x=>String(x.tank_id)===String(tid))||null}function render(){let totalCap=0,totalStock=0,low=0,critical=0,garageMap={};T.forEach(t=>{let cap=n(t.capacity_litres||t.capacity||0),rec=latestForTank(t.id),stock=rec?n(rec.closing_litres):0;totalCap+=cap;totalStock+=stock;let pct=cap?Math.max(0,Math.min(100,stock/cap*100)):0;let level=pct<=10?'critical':pct<=25?'low':'ok';if(level==='low'||level==='critical')low++;if(level==='critical')critical++;if(!garageMap[t.station_id])garageMap[t.station_id]=[];garageMap[t.station_id].push({t,rec,stock,pct,level})});$('capacity').textContent=totalCap.toLocaleString()+' L';$('stock').textContent=totalStock.toLocaleString()+' L';$('low').textContent=low;$('critical').textContent=critical;$('garages').innerHTML=S.map(st=>{let tanks=garageMap[st.id]||[];return '<div class="garage"><h3>'+esc(st.name||'Garage')+'</h3>'+(!tanks.length?'<p class="hint">No tanks configured.</p>':tanks.map(x=>{let cls=fuelName(x.t.fuel_type).toLowerCase(),status=x.level==='critical'?'CRITICAL':x.level==='low'?'LOW':'OK';return '<div class="tank '+cls+'" style="margin-top:10px"><b>'+fuelName(x.t.fuel_type)+'</b><div class="value">'+x.stock.toLocaleString()+' L</div><div class="hint">Capacity: '+n(x.t.capacity_litres||x.t.capacity).toLocaleString()+' L</div><div class="bar"><span style="width:'+x.pct+'%"></span></div><span class="status '+(x.level==='low'?'low':'')+(x.level==='critical'?' critical':'')+'">'+status+' · '+x.pct.toFixed(0)+'%</span><div class="actions"><button class="btn '+(cls==='petrol'?'petrolbtn':'dieselbtn')+'" onclick="openStock(\''+x.t.id+'\')">Enter Daily Stock</button></div></div>'}).join('')+'</div>'}).join('');$('history').innerHTML=D.map(r=>'<tr><td>'+esc(r.stock_date)+'</td><td>'+esc(garageName(r.station_id))+'</td><td>'+esc(tFuelName(r.tank_id))+'</td><td>'+n(r.opening_litres).toLocaleString()+' L</td><td>'+n(r.deliveries_litres).toLocaleString()+' L</td><td>'+n(r.sales_litres).toLocaleString()+' L</td><td>'+n(r.closing_litres).toLocaleString()+' L</td><td>'+(r.physical_dip_litres==null?'—':n(r.physical_dip_litres).toLocaleString()+' L')+'</td><td>'+(r.variance_litres==null?'—':n(r.variance_litres).toLocaleString()+' L')+'</td></tr>').join('')||'<tr><td colspan="9">No daily stock records yet.</td></tr>'}load();
+</script></body></html>
