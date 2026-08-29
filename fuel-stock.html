@@ -150,20 +150,28 @@ background:#172033
 background:#2563eb
 }
 
+/* PETROL = GREEN */
 .petrolbtn{
-background:#e20d18
+background:#239447;
+color:#fff
 }
 
+/* DIESEL = PURPLE */
 .dieselbtn{
-background:#239447
+background:#7b3fc6;
+color:#fff
 }
 
+/* PETROL TANK = GREEN */
 .tank.petrol{
-border-left:5px solid #e20d18
+border-left:5px solid #239447;
+background:#f1faf4
 }
 
+/* DIESEL TANK = PURPLE */
 .tank.diesel{
-border-left:5px solid #239447
+border-left:5px solid #7b3fc6;
+background:#f7f1fc
 }
 
 .bar{
@@ -174,14 +182,16 @@ overflow:hidden;
 margin:9px 0
 }
 
+/* PETROL BAR = GREEN */
 .bar span{
 display:block;
 height:100%;
-background:#e20d18
+background:#239447
 }
 
+/* DIESEL BAR = PURPLE */
 .diesel .bar span{
-background:#239447
+background:#7b3fc6
 }
 
 .status{
@@ -353,9 +363,7 @@ align-items:flex-start
 
 <nav class="nav">
 
-<a href="index.html">
-Dashboard
-</a>
+<a href="index.html">Dashboard</a>
 
 <a href="pump-readings.html">
 Pump Meter Readings
@@ -401,13 +409,9 @@ Reports
 ☰
 </button>
 
-<b>
-NYAMBO FUEL MANAGEMENT
-</b>
+<b>NYAMBO FUEL MANAGEMENT</b>
 
-<span>
-⛽
-</span>
+<span>⛽</span>
 
 </div>
 
@@ -415,12 +419,11 @@ NYAMBO FUEL MANAGEMENT
 
 <div>
 
-<h1>
-Fuel Stock & Levels
-</h1>
+<h1>Fuel Stock & Levels</h1>
 
 <p>
-Open each garage to see fuel received, sold, current stock and when to refill.
+Open each garage to see fuel received, sold,
+current stock and when to refill.
 </p>
 
 </div>
@@ -459,9 +462,7 @@ Open each garage to see fuel received, sold, current stock and when to refill.
 
 <div class="panel">
 
-<h2>
-Open a Garage
-</h2>
+<h2>Open a Garage</h2>
 
 <p class="hint">
 Each garage has separate petrol and diesel stock controls.
@@ -473,9 +474,7 @@ Each garage has separate petrol and diesel stock controls.
 
 <div class="panel">
 
-<h2>
-Low Stock Alerts
-</h2>
+<h2>Low Stock Alerts</h2>
 
 <div class="table">
 
@@ -504,12 +503,11 @@ Low Stock Alerts
 
 <div>
 
-<h2>
-Supplier → Garage Fuel Movement
-</h2>
+<h2>Supplier → Garage Fuel Movement</h2>
 
 <p class="hint">
-Record fuel loaded from the supplier, delivered to the garage and what remains in the tanker.
+Record fuel loaded from the supplier,
+delivered to the garage and what remains in the tanker.
 </p>
 
 </div>
@@ -548,9 +546,7 @@ Record fuel loaded from the supplier, delivered to the garage and what remains i
 
 <div class="panel">
 
-<h2>
-Stock History
-</h2>
+<h2>Stock History</h2>
 
 <button class="btn dark" onclick="historyModal()">
 View Complete History
@@ -564,7 +560,8 @@ View Complete History
 
 <div class="box">
 
-<button class="close" onclick="modal.classList.remove('show')">
+<button class="close"
+onclick="modal.classList.remove('show')">
 ×
 </button>
 
@@ -720,7 +717,9 @@ current(t)/n(t.capacity_litres||1)*100
 function stat(t){
 
 let q=current(t);
+
 let low=n(t.low_stock_litres);
+
 let cap=n(t.capacity_litres);
 
 return q<=cap*.1
@@ -847,21 +846,33 @@ ${s.name}
 </h2>
 
 <p class="hint">
+
 Current:
 <b>${lit(total)}</b>
+
 of
+
 ${lit(cap2)}
+
 •
+
 Space:
-<b>${lit(Math.max(0,cap2-total))}</b>
+
+<b>
+${lit(Math.max(0,cap2-total))}
+</b>
+
 </p>
+
 
 <div class="fuelrow">
 
 ${ts.map(t=>{
 
 let q=current(t);
+
 let p=pct(t);
+
 let z=stat(t);
 
 return `
@@ -877,21 +888,31 @@ ${t.fuel_type}
 </b>
 
 <div style="font-size:22px;font-weight:bold;margin-top:5px">
+
 ${lit(q)}
+
 </div>
 
 <small>
+
 of ${lit(t.capacity_litres)}
+
 •
+
 ${p.toFixed(1)}% full
+
 </small>
 
 <div class="bar">
+
 <span style="width:${p}%"></span>
+
 </div>
 
 <span class="status ${z[1]}">
+
 ${z[0]}
+
 </span>
 
 </div>
@@ -908,40 +929,58 @@ ${z[0]}
 <button
 class="btn"
 onclick="openGarage('${s.id}')">
+
 Open Garage
+
 </button>
 
 
 ${
 petrol
+
 ?
+
 `<button
 class="btn petrolbtn"
 onclick="record('${petrol.id}')">
+
 🟢 Record Petrol Stock
+
 </button>`
+
 :
+
 `<button
 class="btn petrolbtn"
 onclick="recordFuel('${s.id}','Petrol')">
+
 🟢 Add Petrol Tank & Record
+
 </button>`
 }
 
 
 ${
 diesel
+
 ?
+
 `<button
 class="btn dieselbtn"
 onclick="record('${diesel.id}')">
+
 🟣 Record Diesel Stock
+
 </button>`
+
 :
+
 `<button
 class="btn dieselbtn"
 onclick="recordFuel('${s.id}','Diesel')">
+
 🟣 Add Diesel Tank & Record
+
 </button>`
 }
 
@@ -1021,8 +1060,13 @@ function openGarage(id){
 let s=
 S.find(x=>String(x.id)===String(id));
 
+if(!s)
+return;
+
 let ts=
-T.filter(t=>String(t.station_id)===String(id));
+T.filter(t=>
+String(t.station_id)===String(id)
+);
 
 let totalRec=
 ts.reduce(
@@ -1063,23 +1107,54 @@ Complete fuel position for this garage.
 <div class="summary">
 
 <div class="mini">
-<span>Total Received</span>
-<b>${lit(totalRec)}</b>
+
+<span>
+Total Received
+</span>
+
+<b>
+${lit(totalRec)}
+</b>
+
 </div>
 
-<div class="mini">
-<span>Total Sold</span>
-<b>${lit(totalSold)}</b>
-</div>
 
 <div class="mini">
-<span>Left Now</span>
-<b>${lit(totalCur)}</b>
+
+<span>
+Total Sold
+</span>
+
+<b>
+${lit(totalSold)}
+</b>
+
 </div>
 
+
 <div class="mini">
-<span>Space Available</span>
-<b>${lit(Math.max(0,totalCap-totalCur))}</b>
+
+<span>
+Left Now
+</span>
+
+<b>
+${lit(totalCur)}
+</b>
+
+</div>
+
+
+<div class="mini">
+
+<span>
+Space Available
+</span>
+
+<b>
+${lit(Math.max(0,totalCap-totalCur))}
+</b>
+
 </div>
 
 </div>
@@ -1144,22 +1219,32 @@ ${lit(fill)}
 ${z[0]}
 </span>
 
+
 ${
 q<=n(t.low_stock_litres)
+
 ?
 
 `<p class="yellow">
+
 <b>Recommendation:</b>
+
 Fill this tank soon.
+
 Suggested refill:
+
 ${lit(fill)}
+
 </p>`
 
 :
 
 `<p class="green">
+
 <b>Recommendation:</b>
+
 No immediate refill needed.
+
 </p>`
 }
 
@@ -1198,12 +1283,15 @@ Fuel received at this garage
 <table>
 
 <tr>
+
 <th>Date</th>
 <th>Fuel</th>
 <th>Litres</th>
 <th>Source</th>
 <th>Reference</th>
+
 </tr>
+
 
 ${
 P
@@ -1777,6 +1865,9 @@ T.find(x=>
 String(x.id)===String(id)
 );
 
+if(!t)
+return alert('Tank could not be found.');
+
 
 let o=current(t);
 
@@ -1867,10 +1958,14 @@ Notes
 
 
 <button
-class="btn"
+class="btn ${
+String(t.fuel_type).toLowerCase()==='petrol'
+?'petrolbtn'
+:'dieselbtn'
+}"
 onclick="saveStock('${t.id}')">
 
-Save Daily Stock
+Save Daily ${t.fuel_type} Stock
 
 </button>
 
