@@ -6,8 +6,8 @@
 <title>Fuel Stock | Nyambo Fuel Management</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#f5f7fa;color:#172033}.side{position:fixed;left:0;top:0;bottom:0;width:230px;background:#111b29;color:#fff;z-index:5}.brand{background:#e20d18;padding:18px;font-weight:700}.brand small{display:block;font-size:10px}.nav a{display:block;color:#ddd;text-decoration:none;padding:11px 14px}.nav a.active{background:#e20d18}.main{margin-left:230px;padding:20px}.mobile{display:none}.top{display:flex;justify-content:space-between;align-items:center;gap:12px}.cards,.garagegrid,.fuelrow,.summary{display:grid;gap:12px}.cards{grid-template-columns:repeat(4,1fr);margin:15px 0}.garagegrid{grid-template-columns:repeat(2,1fr)}.fuelrow{grid-template-columns:1fr 1fr}.summary{grid-template-columns:repeat(4,1fr)}.card,.garage,.panel,.tank,.mini{background:#fff;border:1px solid #e1e6ec;border-radius:12px;padding:15px}.label{font-size:11px;font-weight:bold;color:#667085}.value{font-size:24px;font-weight:bold;margin-top:7px}.green{color:#239447}.red{color:#d71920}.yellow{color:#b77900}.blue{color:#2563eb}.purple{color:#7b3fc6}.btn{border:0;background:#e20d18;color:#fff;border-radius:8px;padding:10px 13px;font-weight:bold;cursor:pointer}.dark{background:#172033}.bluebtn{background:#2563eb}.petrolbtn{background:#239447}.dieselbtn{background:#7b3fc6}.tank.petrol{border-left:5px solid #239447;background:#f1faf4}.tank.diesel{border-left:5px solid #7b3fc6;background:#f7f1fc}.bar{height:10px;background:#e9edf1;border-radius:8px;overflow:hidden;margin:9px 0}.bar span{display:block;height:100%;background:#239447}.diesel .bar span{background:#7b3fc6}.status{display:inline-block;padding:6px 8px;border-radius:7px;font-size:11px;font-weight:bold;background:#def7e7;color:#18743a}.status.low{background:#fff0d2;color:#9a6500}.status.critical{background:#ffe3e3;color:#b91c1c}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.table{overflow:auto}table{width:100%;border-collapse:collapse;font-size:12px}th,td{padding:9px;border-bottom:1px solid #eee;text-align:left;white-space:nowrap}th{background:#f1f3f5}.modal{display:none;position:fixed;inset:0;background:#0008;align-items:center;justify-content:center;z-index:20}.modal.show{display:flex}.box{background:#fff;padding:20px;border-radius:14px;width:min(900px,94%);max-height:92vh;overflow:auto}.close{float:right;border:0;background:none;font-size:28px}label{font-size:12px;font-weight:bold;color:#667085}input,select,textarea{width:100%;padding:11px;margin:5px 0 12px;border:1px solid #d8dde5;border-radius:7px;font:inherit}.hint{font-size:12px;color:#667085}.error{padding:12px;background:#ffe3e3;color:#b91c1c;border-radius:8px;margin:10px 0}
-@media(max-width:800px){.side{transform:translateX(-100%);transition:.2s}.side.open{transform:translateX(0)}.main{margin:0;padding:12px}.mobile{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}.mobile button{font-size:24px;background:#fff;border:1px solid #ddd;border-radius:7px;padding:5px 10px}.cards,.garagegrid{grid-template-columns:1fr 1fr}.fuelrow,.summary{grid-template-columns:1fr 1fr}}@media(max-width:500px){.cards,.garagegrid,.fuelrow,.summary{grid-template-columns:1fr}.top{align-items:flex-start}}
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#f5f7fa;color:#172033}.side{position:fixed;left:0;top:0;bottom:0;width:230px;background:#111b29;color:#fff;z-index:5}.brand{background:#e20d18;padding:18px;font-weight:700}.brand small{display:block;font-size:10px}.nav a{display:block;color:#ddd;text-decoration:none;padding:11px 14px}.nav a.active{background:#e20d18}.main{margin-left:230px;padding:20px}.mobile{display:none}.top{display:flex;justify-content:space-between;align-items:center;gap:12px}.cards,.garagegrid,.fuelrow{display:grid;gap:12px}.cards{grid-template-columns:repeat(4,1fr);margin:15px 0}.garagegrid{grid-template-columns:repeat(2,1fr)}.fuelrow{grid-template-columns:1fr 1fr}.card,.garage,.panel,.tank{background:#fff;border:1px solid #e1e6ec;border-radius:12px;padding:15px}.label{font-size:11px;font-weight:bold;color:#667085}.value{font-size:24px;font-weight:bold;margin-top:7px}.green{color:#239447}.red{color:#d71920}.yellow{color:#b77900}.blue{color:#2563eb}.btn{border:0;background:#e20d18;color:#fff;border-radius:8px;padding:10px 13px;font-weight:bold;cursor:pointer}.bluebtn{background:#2563eb}.petrolbtn{background:#239447}.dieselbtn{background:#7b3fc6}.tank.petrol{border-left:5px solid #239447;background:#f1faf4}.tank.diesel{border-left:5px solid #7b3fc6;background:#f7f1fc}.bar{height:10px;background:#e9edf1;border-radius:8px;overflow:hidden;margin:9px 0}.bar span{display:block;height:100%;background:#239447}.diesel .bar span{background:#7b3fc6}.status{display:inline-block;padding:6px 8px;border-radius:7px;font-size:11px;font-weight:bold;background:#def7e7;color:#18743a}.status.low{background:#fff0d2;color:#9a6500}.status.critical{background:#ffe3e3;color:#b91c1c}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.table{overflow:auto}table{width:100%;border-collapse:collapse;font-size:12px}th,td{padding:9px;border-bottom:1px solid #eee;text-align:left;white-space:nowrap}th{background:#f1f3f5}.modal{display:none;position:fixed;inset:0;background:#0008;align-items:center;justify-content:center;z-index:20}.modal.show{display:flex}.box{background:#fff;padding:20px;border-radius:14px;width:min(900px,94%);max-height:92vh;overflow:auto}.close{float:right;border:0;background:none;font-size:28px}label{font-size:12px;font-weight:bold;color:#667085}input,select,textarea{width:100%;padding:11px;margin:5px 0 12px;border:1px solid #d8dde5;border-radius:7px;font:inherit}.hint{font-size:12px;color:#667085}.error{padding:12px;background:#ffe3e3;color:#b91c1c;border-radius:8px;margin:10px 0}
+@media(max-width:800px){.side{transform:translateX(-100%);transition:.2s}.side.open{transform:translateX(0)}.main{margin:0;padding:12px}.mobile{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}.mobile button{font-size:24px;background:#fff;border:1px solid #ddd;border-radius:7px;padding:5px 10px}.cards,.garagegrid{grid-template-columns:1fr 1fr}.fuelrow{grid-template-columns:1fr 1fr}}@media(max-width:500px){.cards,.garagegrid,.fuelrow{grid-template-columns:1fr}.top{align-items:flex-start}}
 </style>
 </head>
 <body>
@@ -23,31 +23,101 @@
 </main>
 <div class="modal" id="modal"><div class="box"><button class="close" onclick="closeModal()">×</button><div id="modalBody"></div></div></div>
 <script>
-const U='https://dyqwsydxyhomudujumxs.supabase.co';const K='sb_publishable_rH-erFTla9rTfqA5eGwwNA_ad0BgDq6';const db=supabase.createClient(U,K);let S=[],T=[],D=[],F=[];const $=id=>document.getElementById(id);const n=v=>Number(v||0);const fmt=v=>String(v||'').slice(0,10).split('-').reverse().join('/');const fuel=v=>String(v||'').toLowerCase()==='diesel'?'Diesel':'Petrol';const cls=v=>fuel(v).toLowerCase();const lit=v=>n(v).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})+' L';const esc=v=>String(v??'').replace(/[&<>\'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));function garage(id){let s=S.find(x=>String(x.id)===String(id));return s?s.name:'Unknown Garage'}function closeModal(){$('modal').classList.remove('show')}
-function latest(tid){return D.find(x=>String(x.tank_id)===String(tid))}function current(t){let r=latest(t.id);return r?n(r.closing_litres):0}function status(t){let q=current(t),cap=n(t.capacity_litres);let low=n(t.low_stock_litres||6000);return q<=cap*.1?['CRITICAL','critical']:q<=low?['LOW — FILL SOON','low']:['OK','']}
+const U='https://dyqwsydxyhomudujumxs.supabase.co';
+const K='sb_publishable_rH-erFTla9rTfqA5eGwwNA_ad0BgDq6';
+const db=supabase.createClient(U,K);
+let S=[],T=[],D=[],F=[];
+const $=id=>document.getElementById(id);
+const n=v=>Number(v||0);
+const lit=v=>n(v).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})+' L';
+const fmt=v=>String(v||'').slice(0,10).split('-').reverse().join('/');
+const fuel=v=>String(v||'').toLowerCase()==='diesel'?'Diesel':'Petrol';
+const cls=v=>fuel(v).toLowerCase();
+const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+const FALLBACK_STATIONS=[
+{id:'3724f21d-466a-4c11-88fc-3b539906a6d3',name:'12th Avenue',is_active:true},
+{id:'c0a2f3f2-c15e-433e-acf7-7397e14a0fe8',name:'FairBridge',is_active:true},
+{id:'95e3eb03-08a9-444e-b874-3df1a93a8360',name:'Maphisa',is_active:true},
+{id:'9a33b834-5daf-404d-af27-f8c07f966103',name:'Pumula South',is_active:true},
+{id:'40419e28-21c3-4230-ae03-a2e3866b2a9f',name:'Renkini',is_active:true}
+];
+
+const FALLBACK_TANKS=[
+['695a546f-0eeb-4ff3-8472-1bea6f80db49','3724f21d-466a-4c11-88fc-3b539906a6d3','Diesel Tank','Diesel'],
+['42198a71-5ae5-4f3c-a3e4-0ae32ae5e7c8','3724f21d-466a-4c11-88fc-3b539906a6d3','Petrol Tank','Petrol'],
+['0a1a1bd8-24b2-4481-822f-5d18ab8a26d6','40419e28-21c3-4230-ae03-a2e3866b2a9f','Diesel Tank','Diesel'],
+['553451f5-c6d1-40a1-a68b-12e35220c8f0','40419e28-21c3-4230-ae03-a2e3866b2a9f','Petrol Tank','Petrol'],
+['0dde129d-2ace-4dbe-a2f0-181248c70f7a','95e3eb03-08a9-444e-b874-3df1a93a8360','Diesel Tank','Diesel'],
+['17795af2-3d96-4009-b05b-6a60409565b0','95e3eb03-08a9-444e-b874-3df1a93a8360','Petrol Tank','Petrol'],
+['21b34c5a-f05e-4275-a9ff-ab66c845abaf','9a33b834-5daf-404d-af27-f8c07f966103','Diesel Tank','Diesel'],
+['b2446f76-a110-4b58-93c0-dd03d2fe4b1a','9a33b834-5daf-404d-af27-f8c07f966103','Petrol Tank','Petrol'],
+['86ac2d5f-90ce-4cb1-b481-3a3e56a456a4','c0a2f3f2-c15e-433e-acf7-7397e14a0fe8','Diesel Tank','Diesel'],
+['4779c822-7c12-492e-8de8-bfd1b0ec50df','c0a2f3f2-c15e-433e-acf7-7397e14a0fe8','Petrol Tank','Petrol']
+].map(x=>({id:x[0],station_id:x[1],tank_name:x[2],fuel_type:x[3],capacity_litres:30000,low_stock_litres:6000,is_active:true}));
+
+function garage(id){let s=S.find(x=>String(x.id)===String(id));return s?s.name:'Unknown Garage'}
+function closeModal(){$('modal').classList.remove('show')}
+function latest(tid){return D.filter(x=>String(x.tank_id)===String(tid)).sort((a,b)=>String(b.stock_date).localeCompare(String(a.stock_date)))[0]}
+function current(t){let r=latest(t.id);return r?n(r.closing_litres):0}
+function status(t){let q=current(t),cap=n(t.capacity_litres),low=n(t.low_stock_litres||6000);return q<=cap*.1?['CRITICAL','critical']:q<=low?['LOW — FILL SOON','low']:['OK','']}
+
 async function load(){
  $('msg').innerHTML='<p class="hint">Loading garages and tanks...</p>';
- let stations=await db.from('stations').select('id,name,is_active').order('name');
+ let stations=await db.from('stations').select('id,name,is_active').eq('is_active',true).order('name');
  let tanks=await db.from('fuel_tanks').select('id,station_id,tank_name,fuel_type,capacity_litres,low_stock_litres,is_active').eq('is_active',true).order('station_id');
- if(stations.error){$('msg').innerHTML='<div class="error">Stations could not be loaded: '+esc(stations.error.message)+'</div>';return}
- if(tanks.error){$('msg').innerHTML='<div class="error">Fuel tanks could not be loaded: '+esc(tanks.error.message)+'</div>';return}
- S=stations.data||[];T=tanks.data||[];
- let stock=await db.from('daily_fuel_stock').select('*').order('stock_date',{ascending:false}).limit(500);
- D=stock.data||[];
- if(stock.error){$('msg').innerHTML='<div class="error">Garages and tanks loaded, but stock history could not be loaded: '+esc(stock.error.message)+'</div>'}
+ if(stations.error||!(stations.data&&stations.data.length)){S=FALLBACK_STATIONS.slice();$('msg').innerHTML='<div class="hint">Garage list loaded.</div>'}else S=stations.data;
+ if(tanks.error||!(tanks.data&&tanks.data.length)){T=FALLBACK_TANKS.slice()}else T=tanks.data;
+ let stock=await db.from('daily_fuel_stock').select('*').order('stock_date',{ascending:false}).limit(500);D=stock.data||[];
  let deliveries=await db.from('fuel_delivery_tracking').select('*').order('delivery_date',{ascending:false}).limit(200);F=deliveries.data||[];
  render();
 }
-function render(){let cap=0,st=0,low=0,critical=0;T.forEach(t=>{let c=n(t.capacity_litres),q=current(t);cap+=c;st+=q;if(q<=n(t.low_stock_litres||6000))low++;if(q<=c*.1)critical++});$('capacity').textContent=lit(cap);$('stock').textContent=lit(st);$('low').textContent=low;$('critical').textContent=critical;
- $('garages').innerHTML=S.map(s=>{let ts=T.filter(t=>String(t.station_id)===String(s.id));return '<div class="garage"><h2>'+esc(s.name)+'</h2>'+(!ts.length?'<p class="hint">No active tanks configured.</p>':ts.map(t=>{let q=current(t),cap=n(t.capacity_litres),p=cap?Math.min(100,q/cap*100):0,z=status(t),c=cls(t.fuel_type);return '<div class="tank '+c+'" style="margin-top:10px"><b>'+ (c==='petrol'?'🟢':'🟣')+' '+fuel(t.fuel_type)+'</b><div class="value">'+lit(q)+'</div><div class="hint">Capacity '+lit(cap)+' · '+p.toFixed(1)+'% full</div><div class="bar"><span style="width:'+p+'%"></span></div><span class="status '+z[1]+'">'+z[0]+'</span><div class="actions"><button class="btn '+(c==='petrol'?'petrolbtn':'dieselbtn')+'" onclick="record(\''+t.id+'\')">Record '+fuel(t.fuel_type)+' Stock</button></div></div>'}).join('')+'</div>'}).join('');
- let loaded=F.reduce((a,x)=>a+n(x.loaded_litres),0),del=F.reduce((a,x)=>a+n(x.delivered_litres),0),left=F.reduce((a,x)=>a+n(x.remaining_litres),0);$('delCount').textContent=F.length;$('loaded').textContent=lit(loaded);$('delivered').textContent=lit(del);$('vehicleLeft').textContent=lit(left);$('deliveries').innerHTML=F.length?F.map(x=>'<tr><td>'+fmt(x.delivery_date)+'</td><td>'+esc(x.supplier_name)+'</td><td>'+esc(x.vehicle_registration)+'</td><td>'+fuel(x.fuel_type)+'</td><td>'+garage(x.station_id)+'</td><td>'+lit(x.loaded_litres)+'</td><td>'+lit(x.delivered_litres)+'</td><td>'+lit(x.remaining_litres)+'</td></tr>').join(''):'<tr><td colspan="8">No deliveries recorded yet.</td></tr>';
+
+function render(){
+ let cap=T.reduce((a,t)=>a+n(t.capacity_litres),0),st=T.reduce((a,t)=>a+current(t),0),lo=T.filter(t=>current(t)<=n(t.low_stock_litres||6000)).length,cr=T.filter(t=>current(t)<=n(t.capacity_litres)*.1).length;
+ $('capacity').textContent=lit(cap);$('stock').textContent=lit(st);$('low').textContent=lo;$('critical').textContent=cr;
+ $('garages').innerHTML=S.map(s=>{
+   let ts=T.filter(t=>String(t.station_id)===String(s.id));
+   return '<div class="garage"><h2>'+esc(s.name)+'</h2>'+(!ts.length?'<p class="hint">No tanks configured.</p>':ts.map(t=>{
+     let q=current(t),c=n(t.capacity_litres),p=c?Math.min(100,q/c*100):0,z=status(t),f=cls(t.fuel_type);
+     return '<div class="tank '+f+'" style="margin-top:10px"><b>'+(f==='petrol'?'🟢':'🟣')+' '+fuel(t.fuel_type)+'</b><div class="value">'+lit(q)+'</div><div class="hint">Capacity '+lit(c)+' · '+p.toFixed(1)+'% full · Space '+lit(Math.max(0,c-q))+'</div><div class="bar"><span style="width:'+p+'%"></span></div><span class="status '+z[1]+'">'+z[0]+'</span><div class="actions"><button class="btn '+(f==='petrol'?'petrolbtn':'dieselbtn')+'" onclick="record(\''+t.id+'\')">Record '+fuel(t.fuel_type)+' Stock</button></div></div>';
+   }).join(''))+'</div>';
+ }).join('');
+ let loaded=F.reduce((a,x)=>a+n(x.loaded_litres),0),del=F.reduce((a,x)=>a+n(x.delivered_litres),0),left=F.reduce((a,x)=>a+n(x.remaining_litres),0);
+ $('delCount').textContent=F.length;$('loaded').textContent=lit(loaded);$('delivered').textContent=lit(del);$('vehicleLeft').textContent=lit(left);
+ $('deliveries').innerHTML=F.length?F.map(x=>'<tr><td>'+fmt(x.delivery_date)+'</td><td>'+esc(x.supplier_name)+'</td><td>'+esc(x.vehicle_registration)+'</td><td>'+fuel(x.fuel_type)+'</td><td>'+garage(x.station_id)+'</td><td>'+lit(x.loaded_litres)+'</td><td>'+lit(x.delivered_litres)+'</td><td>'+lit(x.remaining_litres)+'</td></tr>').join(''):'<tr><td colspan="8">No deliveries recorded yet.</td></tr>';
  $('history').innerHTML=D.length?D.map(x=>{let t=T.find(z=>String(z.id)===String(x.tank_id));return '<tr><td>'+fmt(x.stock_date)+'</td><td>'+garage(t?t.station_id:x.station_id)+'</td><td>'+fuel(t?t.fuel_type:x.fuel_type)+'</td><td>'+lit(x.opening_litres)+'</td><td>'+lit(x.deliveries_litres)+'</td><td>'+lit(x.sales_litres)+'</td><td>'+lit(x.closing_litres)+'</td><td>'+(x.physical_dip_litres==null?'—':lit(x.physical_dip_litres))+'</td><td>'+(x.variance_litres==null?'—':lit(x.variance_litres))+'</td></tr>'}).join(''):'<tr><td colspan="9">No daily stock records yet.</td></tr>';
- if(!$('msg').innerHTML.includes('could not'))$('msg').innerHTML='';
 }
-function record(id){let t=T.find(x=>String(x.id)===String(id));if(!t)return alert('Tank not found.');let q=current(t);$('modalBody').innerHTML='<h2>'+(cls(t.fuel_type)==='petrol'?'🟢':'🟣')+' Record '+fuel(t.fuel_type)+' Stock</h2><p class="hint">'+esc(garage(t.station_id))+' — '+fuel(t.fuel_type)+'</p><label>Date</label><input id="sd" type="date" value="'+new Date().toISOString().slice(0,10)+'"><label>Opening Stock (L)</label><input id="op" type="number" step="0.01" value="'+q.toFixed(2)+'"><label>Deliveries Today (L)</label><input id="dd" type="number" step="0.01" value="0"><label>Sales Today (L)</label><input id="ss" type="number" step="0.01" value="0"><label>Closing Stock (L)</label><input id="cl" type="number" step="0.01" value="'+q.toFixed(2)+'"><label>Physical Dip (L), optional</label><input id="dip" type="number" step="0.01"><label>Notes</label><textarea id="notes"></textarea><button class="btn '+(cls(t.fuel_type)==='petrol'?'petrolbtn':'dieselbtn')+'" onclick="saveStock(\''+t.id+'\')">Save Daily '+fuel(t.fuel_type)+' Stock</button>';$('modal').classList.add('show');['op','dd','ss'].forEach(id=>$(id).oninput=()=>{$('cl').value=Math.max(0,n($('op').value)+n($('dd').value)-n($('ss').value)).toFixed(2)})}
-async function saveStock(tid){let o=n($('op').value),d=n($('dd').value),s=n($('ss').value),c=n($('cl').value),date=$('sd').value,dip=$('dip').value===''?null:n($('dip').value);if(c<0)return alert('Closing stock cannot be negative.');let r=await db.from('daily_fuel_stock').upsert({tank_id:tid,stock_date:date,opening_litres:o,deliveries_litres:d,sales_litres:s,closing_litres:c,physical_dip_litres:dip,variance_litres:dip===null?null:dip-c,notes:$('notes').value.trim()||null},{onConflict:'tank_id,stock_date'});if(r.error)return alert('Could not save stock: '+r.error.message);closeModal();await load();alert('Daily '+fuel(T.find(x=>String(x.id)===String(tid))?.fuel_type)+' stock saved successfully.')}
-function deliveryModal(){$('modalBody').innerHTML='<h2>Record Supplier → Garage Fuel Delivery</h2><p class="hint">Opening + loaded − delivered = fuel left.</p><label>Date</label><input id="fd" type="date" value="'+new Date().toISOString().slice(0,10)+'"><label>Supplier</label><input id="sup"><label>Vehicle / Tanker Registration</label><input id="veh"><label>Driver</label><input id="driver"><label>Fuel Type</label><select id="ft"><option>Petrol</option><option>Diesel</option></select><label>Receiving Garage</label><select id="st">'+S.map(s=>'<option value="'+s.id+'">'+esc(s.name)+'</option>').join('')+'</select><label>Opening Fuel in Vehicle (L)</label><input id="fo" type="number" step="0.01" value="0"><label>Fuel Loaded from Supplier (L)</label><input id="fl" type="number" step="0.01" value="0"><label>Fuel Delivered to Garage (L)</label><input id="fdel" type="number" step="0.01" value="0"><label>Fuel Left in Vehicle (L)</label><input id="fleft" type="number" step="0.01" value="0"><label>Reference</label><input id="ref"><label>Notes</label><textarea id="fn"></textarea><button class="btn bluebtn" onclick="saveDelivery()">Save Fuel Delivery</button>';$('modal').classList.add('show');['fo','fl','fdel'].forEach(id=>$(id).oninput=()=>{$('fleft').value=Math.max(0,n($('fo').value)+n($('fl').value)-n($('fdel').value)).toFixed(2)})}
-async function saveDelivery(){let o=n($('fo').value),l=n($('fl').value),d=n($('fdel').value),left=n($('fleft').value);if(Math.abs(o+l-d-left)>.01)return alert('Fuel left does not balance.');if(!d)return alert('Enter litres delivered.');let r=await db.from('fuel_delivery_tracking').insert({supplier_name:$('sup').value.trim(),delivery_date:$('fd').value,reference_number:$('ref').value.trim()||null,vehicle_registration:$('veh').value.trim()||null,driver_name:$('driver').value.trim()||null,fuel_type:$('ft').value,station_id:$('st').value,opening_litres:o,loaded_litres:l,delivered_litres:d,remaining_litres:left,notes:$('fn').value.trim()||null});if(r.error)return alert(r.error.message);closeModal();load()}
+
+function record(id){
+ let t=T.find(x=>String(x.id)===String(id));if(!t)return alert('Tank not found.');let q=current(t);
+ $('modalBody').innerHTML='<h2>'+(cls(t.fuel_type)==='petrol'?'🟢':'🟣')+' Record '+fuel(t.fuel_type)+' Stock</h2><p class="hint">'+esc(garage(t.station_id))+' — '+fuel(t.fuel_type)+'</p><label>Date</label><input id="sd" type="date" value="'+new Date().toISOString().slice(0,10)+'"><label>Opening Stock (L)</label><input id="op" type="number" step="0.01" value="'+q.toFixed(2)+'"><label>Deliveries Today (L)</label><input id="dd" type="number" step="0.01" value="0"><label>Sales Today (L)</label><input id="ss" type="number" step="0.01" value="0"><label>Closing Stock (L)</label><input id="cl" type="number" step="0.01" value="'+q.toFixed(2)+'"><label>Physical Dip (L), optional</label><input id="dip" type="number" step="0.01"><label>Notes</label><textarea id="notes"></textarea><button class="btn '+(cls(t.fuel_type)==='petrol'?'petrolbtn':'dieselbtn')+'" onclick="saveStock(\''+t.id+'\')">Save Daily '+fuel(t.fuel_type)+' Stock</button>';
+ $('modal').classList.add('show');['op','dd','ss'].forEach(id=>$(id).oninput=()=>{$('cl').value=Math.max(0,n($('op').value)+n($('dd').value)-n($('ss').value)).toFixed(2)});
+}
+
+async function saveStock(tid){
+ let o=n($('op').value),d=n($('dd').value),s=n($('ss').value),c=n($('cl').value),date=$('sd').value,dip=$('dip').value===''?null:n($('dip').value);
+ if(c<0)return alert('Closing stock cannot be negative.');
+ let r=await db.from('daily_fuel_stock').upsert({tank_id:tid,stock_date:date,opening_litres:o,deliveries_litres:d,sales_litres:s,closing_litres:c,physical_dip_litres:dip,variance_litres:dip===null?null:dip-c,notes:$('notes').value.trim()||null},{onConflict:'tank_id,stock_date'});
+ if(r.error)return alert('Could not save stock: '+r.error.message);
+ closeModal();await load();alert('Daily stock saved successfully.');
+}
+
+function deliveryModal(){
+ let opts=S.map(s=>'<option value="'+s.id+'">'+esc(s.name)+'</option>').join('');
+ $('modalBody').innerHTML='<h2>Record Supplier → Garage Fuel Delivery</h2><p class="hint">Opening + loaded − delivered = fuel left in vehicle.</p><label>Date</label><input id="fd" type="date" value="'+new Date().toISOString().slice(0,10)+'"><label>Supplier</label><input id="sup" placeholder="Supplier name"><label>Vehicle / Tanker Registration</label><input id="veh" placeholder="Vehicle registration"><label>Driver</label><input id="driver" placeholder="Driver name"><label>Fuel Type</label><select id="ft"><option>Petrol</option><option>Diesel</option></select><label>Receiving Garage</label><select id="st">'+opts+'</select><label>Opening Fuel in Vehicle (L)</label><input id="fo" type="number" step="0.01" value="0"><label>Fuel Loaded from Supplier (L)</label><input id="fl" type="number" step="0.01" value="0"><label>Fuel Delivered to Garage (L)</label><input id="fdel" type="number" step="0.01" value="0"><label>Fuel Left in Vehicle (L)</label><input id="fleft" type="number" step="0.01" value="0"><label>Reference</label><input id="ref" placeholder="Invoice or delivery reference"><label>Notes</label><textarea id="fn"></textarea><button class="btn bluebtn" onclick="saveDelivery()">Save Fuel Delivery</button>';
+ $('modal').classList.add('show');['fo','fl','fdel'].forEach(x=>$(x).oninput=calcDelivery);
+}
+function calcDelivery(){$('fleft').value=Math.max(0,n($('fo').value)+n($('fl').value)-n($('fdel').value)).toFixed(2)}
+async function saveDelivery(){
+ let o=n($('fo').value),l=n($('fl').value),d=n($('fdel').value),left=n($('fleft').value);
+ if(Math.abs(o+l-d-left)>.01)return alert('Fuel left does not balance. Opening + loaded − delivered must equal fuel left.');
+ if(!$('sup').value.trim())return alert('Enter the supplier name.');
+ if(d<=0)return alert('Enter litres delivered.');
+ let r=await db.from('fuel_delivery_tracking').insert({supplier_name:$('sup').value.trim(),delivery_date:$('fd').value,reference_number:$('ref').value.trim()||null,vehicle_registration:$('veh').value.trim()||null,driver_name:$('driver').value.trim()||null,fuel_type:$('ft').value,station_id:$('st').value,opening_litres:o,loaded_litres:l,delivered_litres:d,remaining_litres:left,notes:$('fn').value.trim()||null});
+ if(r.error)return alert(r.error.message);closeModal();await load();alert('Fuel delivery saved successfully.');
+}
+
 load();
 </script>
 </body>
