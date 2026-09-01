@@ -1,1 +1,1 @@
-Deployment trigger: corrected garage dashboard to join pump readings with pumps and show petrol and diesel sold.
+Deployment trigger: garage variance now subtracts credit sales and expenses before comparing with cash collected.
