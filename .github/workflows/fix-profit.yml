@@ -1,0 +1,35 @@
+name: Fix Profit Calculation
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Update profit calculation
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          p = Path('index.html')
+          s = p.read_text()
+          old = "purchaseCost=pu.reduce((s,x)=>s+Number(x.total_amount||0),0),expenseCost="
+          new = "purchaseCost=(()=>{const byFuel={petrol:{litres:0,cost:0},diesel:{litres:0,cost:0}};pu.forEach(x=>{const f=String(x.fuel_type||'').toLowerCase(),k=byFuel[f];if(k){k.litres+=Number(x.litres||0);k.cost+=Number(x.total_amount||0)}});return ['petrol','diesel'].reduce((s,f)=>{const sold=sumL(f==='petrol'?petrol:diesel),k=byFuel[f];return s+(k.litres>0?sold*k.cost/k.litres:0)},0)})(),expenseCost="
+          if old not in s:
+              raise SystemExit('Expected profit calculation not found')
+          p.write_text(s.replace(old, new, 1))
+          PY
+      - name: Remove temporary workflow and commit
+        run: |
+          rm -f .github/workflows/fix-profit.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html .github/workflows/fix-profit.yml
+          git commit -m "Fix profit calculation to use fuel sold cost" || exit 0
+          git push
