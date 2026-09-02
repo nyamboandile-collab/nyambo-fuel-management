@@ -1,8 +1,9 @@
 name: Add authentication to app pages
 
-on:
+"on":
   push:
-    branches: [main]
+    branches:
+      - main
 
 permissions:
   contents: write
@@ -16,9 +17,11 @@ jobs:
 
       - name: Inject auth script
         shell: bash
+        env:
+          COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
         run: |
           set -e
-          if [[ "${{ github.event.head_commit.message }}" == *"[auth-injected]"* ]]; then
+          if [[ "$COMMIT_MESSAGE" == *"[auth-injected]"* ]]; then
             exit 0
           fi
           for file in *.html; do
