@@ -4,28 +4,18 @@ const authClient=window.supabase.createClient(AUTH_SUPABASE_URL,AUTH_SUPABASE_KE
 
 (function(){
   const path=location.pathname.split('/').pop()||'index.html';
-  const isLogin=path==='login.html';
-  if(isLogin){
+  if(path==='login.html'){
     authClient.auth.getSession().then(({data})=>{if(data.session) location.replace('index.html');});
     return;
   }
-
-  const lock=()=>{document.documentElement.style.visibility='hidden';};
-  lock();
-  authClient.auth.getSession().then(({data})=>{
-    if(!data.session){location.replace('login.html');return;}
-    document.documentElement.style.visibility='visible';
-  }).catch(()=>location.replace('login.html'));
-
-  window.addEventListener('pageshow',e=>{
-    if(e.persisted) authClient.auth.getSession().then(({data})=>{if(!data.session) location.replace('login.html');});
-  });
 
   document.addEventListener('DOMContentLoaded',()=>{
     const nav=document.querySelector('.nav');
     if(!nav || document.getElementById('signOutBtn')) return;
     const a=document.createElement('a');
-    a.href='#'; a.id='signOutBtn'; a.innerHTML='<span class="icon">↪</span><span>Sign Out</span>';
+    a.href='#';
+    a.id='signOutBtn';
+    a.innerHTML='<span class="icon">↪</span><span>Sign Out</span>';
     a.style.marginTop='18px';
     a.addEventListener('click',async e=>{
       e.preventDefault();
