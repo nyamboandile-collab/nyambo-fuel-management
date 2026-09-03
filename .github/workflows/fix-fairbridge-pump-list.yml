@@ -18,12 +18,17 @@ jobs:
           from pathlib import Path
           p=Path('pump-readings.html')
           s=p.read_text()
-          rows="""['f413a0b3-6ac8-483b-9a2a-e93933a3369b','c0a2f3f2-c15e-433e-acf7-7397e14a0fe8',3,'Diesel'],['a00b12fb-23be-490f-a22b-cd8e6a37eb3b','c0a2f3f2-c15e-433e-acf7-7397e14a0fe8',4,'Diesel'],"""
-          # The two FairBridge diesel rows are already present in the database; add them to the static pump list if absent.
-          marker="['b79ad4ae-1430-4f58-a544-d28f810bf985','c0a2f3f2-c15e-433e-acf7-7397e14a0fe8',1,'Diesel'],['3bb4ccd6-dac4-420f-b89a-cc03850bba87','c0a2f3f2-c15e-433e-acf7-7397e14a0fe8',1,'Petrol'],['847aed1d-0533-4a4b-8faf-20741c4ad7d6','c0a2f3f2-c15e-433e-acf7-7397e14a0fe8',2,'Diesel'],['820fee23-372d-4805-8b3e-2d10fd5fbe77','c0a2f3f2-c15e-433e-acf7-7397e14a0fe8',2,'Petrol']"
-          if "'f413a0b3-6ac8-483b-9a2a-e93933a3369b','c0a2f3f2-c15e-433e-acf7-7397e14a0fe8',3,'Diesel'" not in s:
-              s=s.replace(marker, marker+','+rows.rstrip(','))
-          p.write_text(s)
+          ids=['f413a0b3-6ac8-483b-9a2a-e93933a3369b','a00b12fb-23be-490f-a22b-cd8e6a37eb3b']
+          if not all(i in s for i in ids):
+              marker="\n].map(x=>({id:x[0],station_id:x[1],pump_number:x[2],fuel_type:x[3],pump_name:pumpNames?.[x[0]]||null}))"
+              rows="\n['f413a0b3-6ac8-483b-9a2a-e93933a3369b','c0a2f3f2-c15e-433e-acf7-7397e14a0fe8',3,'Diesel'],['a00b12fb-23be-490f-a22b-cd8e6a37eb3b','c0a2f3f2-c15e-433e-acf7-7397e14a0fe8',4,'Diesel'],"
+              if marker in s:
+                  s=s.replace(marker, ','+rows.rstrip(',')+marker, 1)
+              else:
+                  raise SystemExit('Could not find pumps array end marker')
+              p.write_text(s)
+          else:
+              print('FairBridge diesel pumps already present')
           PY
       - name: Commit fix
         run: |
