@@ -1,0 +1,47 @@
+name: Reorder Garage Dashboard Cards
+on:
+  push:
+    paths:
+      - 'reorder-garage-dashboard.trigger'
+permissions:
+  contents: write
+jobs:
+  reorder:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Reorder cards
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          p=Path('garage-dashboard.html')
+          s=p.read_text()
+          start=s.index('<div class="cards">')
+          end=s.index('</div><section class="panel" style="margin-top:14px"><h2>Cash Collected & Variance', start)
+          block=s[start:end+6]
+          ids=['expenses','credits','swipe','sales','petrol','diesel','outstanding','cash','payments','expectedCard','variance','profit']
+          cards={}
+          for m in re.finditer(r'<div class="card">.*?</div>(?=<div class="card">|</div><section)', block):
+              c=m.group(0)
+              z=re.search(r'id="([^"]+)"', c)
+              if z: cards[z.group(1)]=c
+          if set(ids)-set(cards):
+              raise SystemExit('Missing card ids: '+str(set(ids)-set(cards)))
+          new='<div class="cards">'+''.join(cards[i] for i in ids)+'</div>'
+          p.write_text(s[:start]+new+s[end+6:])
+          PY
+      - name: Commit changes
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add garage-dashboard.html
+          git commit -m 'Rearrange individual garage dashboard cards' || exit 0
+          git push
+      - name: Remove trigger and workflow
+        if: always()
+        run: |
+          rm -f reorder-garage-dashboard.trigger
+          git add -A
+          git commit -m 'Remove dashboard reorder trigger' || true
+          git push || true
