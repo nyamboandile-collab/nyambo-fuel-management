@@ -1,0 +1,38 @@
+name: Fix pump labels 3
+on:
+  push:
+    paths:
+      - fix-pump-labels3.trigger
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Patch labels
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('pump-readings.html')
+          s=p.read_text()
+          a="p.fuel_type+' Pump '+p.pump_number"
+          b="(p.pump_name || (p.fuel_type+' Pump '+p.pump_number))"
+          print('label occurrences before:', s.count(a))
+          s=s.replace(a,b,1)
+          r="r.pump_number+'</td>"
+          rb="(pumps.find(x=>x.id===r.pump_id)?.pump_name || r.pump_number)+'</td>"
+          print('history occurrences before:', s.count(r))
+          s=s.replace(r,rb,1)
+          p.write_text(s)
+          print('label occurrences after:', s.count(a))
+          PY
+      - name: Commit and remove workflow
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add pump-readings.html .github/workflows/fix-pump-labels3.yml
+          git rm .github/workflows/fix-pump-labels3.yml
+          git commit -m 'Use named pump labels' || exit 0
+          git push
