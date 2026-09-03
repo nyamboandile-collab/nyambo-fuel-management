@@ -22,10 +22,13 @@ jobs:
           block=s[start:end+6]
           ids=['expenses','credits','swipe','sales','petrol','diesel','outstanding','cash','payments','expectedCard','variance','profit']
           cards={}
-          for m in re.finditer(r'<div class="card">.*?</div>(?=<div class="card">|</div><section)', block):
-              c=m.group(0)
-              z=re.search(r'id="([^"]+)"', c)
-              if z: cards[z.group(1)]=c
+          pos=[]
+          for m in re.finditer(r'<div class="card">', block):
+              a=m.start(); b=block.find('<div class="card">', a+1)
+              if b<0: b=block.rfind('</div></div>')+6
+              card=block[a:b]
+              z=re.search(r'id="([^"]+)"', card)
+              if z: cards[z.group(1)]=card
           if set(ids)-set(cards):
               raise SystemExit('Missing card ids: '+str(set(ids)-set(cards)))
           new='<div class="cards">'+''.join(cards[i] for i in ids)+'</div>'
@@ -38,7 +41,7 @@ jobs:
           git add garage-dashboard.html
           git commit -m 'Rearrange individual garage dashboard cards' || exit 0
           git push
-      - name: Remove trigger and workflow
+      - name: Remove trigger
         if: always()
         run: |
           rm -f reorder-garage-dashboard.trigger
