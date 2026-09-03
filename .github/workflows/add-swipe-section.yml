@@ -1,0 +1,31 @@
+name: Add Swipe Section
+on: push
+jobs:
+  update:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Patch dashboard
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('index.html'); s=p.read_text()
+          s=s.replace("<a href=\"payment.html\"><span class=\"icon\">$</span><span>Payment</span></a>","<a href=\"payment.html\"><span class=\"icon\">$</span><span>Payment</span></a><a href=\"swipe.html\"><span class=\"icon\">💳</span><span>Swipe Received</span></a>",1)
+          s=s.replace('<div class="card"><div class="label">PAYMENTS RECEIVED</div><div class="value green" id="payments">$0.00</div></div>','<div class="card"><div class="label">PAYMENTS RECEIVED</div><div class="value green" id="payments">$0.00</div></div><div class="card"><div class="label">SWIPE RECEIVED</div><div class="value green" id="swipeReceived">$0.00</div></div>',1)
+          s=s.replace("db.from('garage_cash_collections').select('*')", "db.from('swipe_collections').select('*'),db.from('garage_cash_collections').select('*')",1)
+          s=s.replace("let h=r[0].data||[],c=r[1].data||[],p=r[2].data||[],pu=r[3].data||[],ex=r[4].data||[],st=r[5].data||[],cu=r[6].data||[],cashRows=r[7].data||[];", "let h=r[0].data||[],c=r[1].data||[],p=r[2].data||[],pu=r[3].data||[],ex=r[4].data||[],st=r[5].data||[],cu=r[6].data||[],swRows=r[7].data||[],cashRows=r[8].data||[];",1)
+          s=s.replace("salesMoney=sumM(h),cashTotal=", "salesMoney=sumM(h),swipeTotal=swRows.reduce((s,x)=>s+Number(x.amount||0),0),cashTotal=",1)
+          s=s.replace("$('payments').textContent=money(pm);$('outstanding')", "$('payments').textContent=money(pm);$('swipeReceived').textContent=money(swipeTotal);$('outstanding')",1)
+          s=s.replace("let a=h.filter(x=>String(x.station_id)===String(s.id)),cc=", "let a=h.filter(x=>String(x.station_id)===String(s.id)),sw=swRows.filter(x=>String(x.station_id)===String(s.id)).reduce((q,x)=>q+Number(x.amount||0),0),cc=",1)
+          s=s.replace("expected=sm-cc-ee,v=cash-expected;", "expected=sm-cc-sw-ee,v=cash-expected;",1)
+          s=s.replace("<th>Credits</th><th>Expenses</th><th>Expected Cash</th>", "<th>Credits</th><th>Swipe</th><th>Expenses</th><th>Expected Cash</th>",1)
+          s=s.replace("money(sm)+'</td><td>'+money(cc)+'</td><td>'+money(ee)", "money(sm)+'</td><td>'+money(cc)+'</td><td>'+money(sw)+'</td><td>'+money(ee)",1)
+          s=s.replace('Expected cash = sales − credits − expenses.', 'Expected cash = sales − credits − swipe − expenses.',1)
+          p.write_text(s)
+          PY
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html .github/workflows/add-swipe-section.yml
+          git commit -m "Add swipe received section" || exit 0
+          git push
