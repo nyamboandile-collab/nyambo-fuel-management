@@ -1,0 +1,37 @@
+name: Fix pump labels
+on:
+  push:
+    paths:
+      - fix-pump-labels.trigger
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fix labels
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('pump-readings.html')
+          s=p.read_text()
+          old="'<b>'+p.fuel_type+' Pump '+p.pump_number+'</b><span class=\\\"tag '+c+'\\\">'+p.fuel_type+'</span>'"
+          new="'<b>'+(p.pump_name || (p.fuel_type+' Pump '+p.pump_number))+'</b><span class=\\\"tag '+c+'\\\">'+p.fuel_type+'</span>'"
+          if old in s:
+              s=s.replace(old,new)
+          old2="'<td>'+r.pump_number+'</td>'"
+          new2="'<td>'+(pumps.find(x=>x.id===r.pump_id)?.pump_name || r.pump_number)+'</td>'"
+          if old2 in s:
+              s=s.replace(old2,new2)
+          p.write_text(s)
+          PY
+      - name: Commit fix and remove workflow
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add pump-readings.html .github/workflows/fix-pump-labels.yml
+          git rm .github/workflows/fix-pump-labels.yml
+          git commit -m 'Display pump names on readings page' || exit 0
+          git push
