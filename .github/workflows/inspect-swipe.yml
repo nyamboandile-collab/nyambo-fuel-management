@@ -1,0 +1,12 @@
+name: Inspect Pump Code
+on: workflow_dispatch
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Inspect
+        run: |
+          grep -n -o '.\{0,250\}money_received.\{0,500\}' pump-readings.html || true
+          grep -n -o '.\{0,250\}fetch(API.\{0,500\}' pump-readings.html || true
+          grep -n -o '.\{0,250\}<div class="fields">.\{0,700\}' pump-readings.html || true
