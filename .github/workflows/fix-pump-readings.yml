@@ -3,6 +3,7 @@ on:
   push:
     paths:
       - pump-readings.html
+      - README.md
   workflow_dispatch:
 permissions:
   contents: write
