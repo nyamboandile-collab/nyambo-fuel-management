@@ -49,29 +49,26 @@ const authClient=window.supabase.createClient(AUTH_SUPABASE_URL,AUTH_SUPABASE_KE
     if(!profile.is_active){await authClient.auth.signOut();location.replace('login.html?disabled=1');return;}
     window.RED_RANGE_USER=profile;
     const allowed=pageRules[profile.role]||pageRules.staff;
-    if(!allowed.includes('*')&&!allowed.includes(path)){
-      if(path==='settings.html') location.replace('index.html'); else location.replace('index.html');
-      return;
-    }
-    document.addEventListener('DOMContentLoaded',()=>{
+    if(!allowed.includes('*')&&!allowed.includes(path)){location.replace('index.html');return;}
+
+    const buildNav=()=>{
       const nav=document.querySelector('.nav');
-      if(nav){
-        nav.querySelectorAll('a[href]').forEach(a=>{
-          const href=a.getAttribute('href');
-          if(href&&href!=='#'&&!allowed.includes('*')&&!allowed.includes(href)) a.style.display='none';
-        });
-        if(allowed.includes('*')||allowed.includes('end-of-day.html')){
-          if(!nav.querySelector('a[href="end-of-day.html"]')){
-            const eod=document.createElement('a');eod.href='end-of-day.html';eod.innerHTML='<span class="icon">✓</span><span>End of Day Closing</span>';nav.appendChild(eod);
-          }
-        }
-        if(!document.getElementById('signOutBtn')){
-          const a=document.createElement('a');a.href='#';a.id='signOutBtn';a.className='rr-signout';a.innerHTML='<span class="icon">↪</span><span>Sign Out</span>';a.addEventListener('click',async e=>{e.preventDefault();a.style.pointerEvents='none';a.style.opacity='.6';const {error}=await authClient.auth.signOut();if(error){alert('Sign out failed. Please try again.');a.style.pointerEvents='';a.style.opacity='';return;}location.replace('login.html');});nav.appendChild(a);
-        }
+      if(!nav)return;
+      nav.querySelectorAll('a[href]').forEach(a=>{
+        const href=a.getAttribute('href');
+        if(href&&href!=='#'&&!allowed.includes('*')&&!allowed.includes(href)) a.style.display='none';
+      });
+      if(!document.getElementById('signOutBtn')){
+        const a=document.createElement('a');a.href='#';a.id='signOutBtn';a.className='rr-signout';a.innerHTML='<span class="icon">↪</span><span>Sign Out</span>';a.addEventListener('click',async e=>{e.preventDefault();a.style.pointerEvents='none';a.style.opacity='.6';const {error}=await authClient.auth.signOut();if(error){alert('Sign out failed. Please try again.');a.style.pointerEvents='';a.style.opacity='';return;}location.replace('login.html');});nav.appendChild(a);
+      }
+      if(!nav.querySelector('.rr-user-badge')){
         const badge=document.createElement('div');badge.className='rr-user-badge';badge.innerHTML='<b>'+roleLabel[profile.role]+'</b><br>'+((profile.full_name||session.user.email||'User'))+(profile.station_id?'<br>Assigned station':'');nav.appendChild(badge);
       }
-      window.dispatchEvent(new CustomEvent('red-range-auth-ready',{detail:profile}));
-    });
+    };
+
+    if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',buildNav,{once:true});
+    else buildNav();
+    window.dispatchEvent(new CustomEvent('red-range-auth-ready',{detail:profile}));
   }
   setup();
 })();
