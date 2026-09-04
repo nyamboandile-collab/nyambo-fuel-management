@@ -10,13 +10,13 @@ const authClient=window.supabase.createClient(AUTH_SUPABASE_URL,AUTH_SUPABASE_KE
     .brand{background:#ef101b !important;color:#fff !important;padding:18px 14px 16px !important;text-align:center !important;flex-shrink:0 !important;}
     .brand-logo{width:205px !important;height:90px !important;max-width:100% !important;margin:auto !important;display:block !important;}
     .brand-name,.brand-sub{color:#fff !important;}
-    .nav{padding:18px 14px 10px !important;overflow-y:auto !important;overflow-x:hidden !important;flex:1 1 auto !important;min-height:0 !important;max-height:none !important;}
+    .nav{padding:18px 14px 24px !important;overflow-y:auto !important;overflow-x:hidden !important;flex:1 1 auto !important;min-height:0 !important;max-height:none !important;}
     .nav a{color:#fff !important;background:transparent !important;font-size:16px !important;font-weight:500 !important;padding:14px !important;border-radius:9px !important;margin-bottom:5px !important;}
     .nav a.active{background:#ef101b !important;color:#fff !important;box-shadow:0 3px 8px #0003 !important;}
     .nav .icon{color:inherit !important;width:25px !important;text-align:center !important;}
     .nav .chev{color:#fff !important;margin-left:auto !important;}
-    .rr-user-badge{display:block;margin:8px 14px 0;padding:10px 12px;background:#17283a;border-radius:8px;font-size:12px;color:#dbe5ee;}
-    .rr-signout{display:flex !important;align-items:center !important;justify-content:center !important;gap:12px !important;flex:0 0 auto !important;width:auto !important;background:#ef101b !important;color:#fff !important;border-radius:9px !important;font-weight:800 !important;margin:8px 14px 14px !important;padding:14px !important;min-height:54px !important;box-shadow:0 3px 10px #0006 !important;text-decoration:none !important;position:static !important;z-index:1000 !important;}
+    .rr-user-badge{display:block;margin:12px 0 10px;padding:12px;background:#17283a;border-radius:9px;font-size:12px;color:#dbe5ee;}
+    .rr-signout{display:flex !important;align-items:center !important;justify-content:center !important;gap:12px !important;width:100% !important;background:#ef101b !important;color:#fff !important;border-radius:9px !important;font-weight:800 !important;margin:4px 0 8px !important;padding:14px !important;min-height:54px !important;box-shadow:0 3px 10px #0006 !important;text-decoration:none !important;position:static !important;z-index:1000 !important;}
     .rr-signout:hover{background:#d90e18 !important;}
     @media(max-width:700px){.side{width:240px !important;transform:translateX(-100%);transition:.2s;box-shadow:4px 0 20px #0005;}.side.open{transform:translateX(0);}.brand-logo{width:205px !important;height:90px !important;}.nav a{font-size:16px !important;padding:14px !important;}}
     @media(max-width:430px){.side{width:300px !important;}.brand{padding:18px 14px 16px !important;}.brand-logo{width:215px !important;height:90px !important;}.nav a{font-size:18px !important;padding:15px 12px !important;}.rr-signout{font-size:18px !important;}}
@@ -59,25 +59,32 @@ const authClient=window.supabase.createClient(AUTH_SUPABASE_URL,AUTH_SUPABASE_KE
         const href=a.getAttribute('href');
         if(href&&href!=='#'&&!allowed.includes('*')&&!allowed.includes(href)) a.style.display='none';
       });
+
       const old=document.getElementById('signOutBtn');
       if(old)old.remove();
+      const oldBadge=nav.querySelector('.rr-user-badge');
+      if(oldBadge)oldBadge.remove();
+
+      const badge=document.createElement('div');
+      badge.className='rr-user-badge';
+      badge.innerHTML='<b>'+roleLabel[profile.role]+'</b><br>'+((profile.full_name||session.user.email||'User'))+(profile.station_id?'<br>Assigned station':'');
+
       const a=document.createElement('a');
-      a.href='#';a.id='signOutBtn';a.className='rr-signout';
+      a.href='#';
+      a.id='signOutBtn';
+      a.className='rr-signout';
       a.innerHTML='<span class="icon">↪</span><span>Sign Out</span>';
       a.addEventListener('click',async e=>{
         e.preventDefault();
-        a.style.pointerEvents='none';a.style.opacity='.6';
+        a.style.pointerEvents='none';
+        a.style.opacity='.6';
         const {error}=await authClient.auth.signOut();
         if(error){alert('Sign out failed. Please try again.');a.style.pointerEvents='';a.style.opacity='';return;}
         location.replace('login.html');
       });
-      side.appendChild(a);
-      if(!nav.querySelector('.rr-user-badge')){
-        const badge=document.createElement('div');
-        badge.className='rr-user-badge';
-        badge.innerHTML='<b>'+roleLabel[profile.role]+'</b><br>'+((profile.full_name||session.user.email||'User'))+(profile.station_id?'<br>Assigned station':'');
-        nav.appendChild(badge);
-      }
+
+      nav.appendChild(badge);
+      nav.appendChild(a);
     };
 
     if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',buildNav,{once:true});
