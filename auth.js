@@ -29,7 +29,7 @@ const authClient=window.supabase.createClient(AUTH_SUPABASE_URL,AUTH_SUPABASE_KE
 
   const pageRules={
     owner:['*'],
-    manager:['index.html','garage-dashboard.html','pump-readings.html','credit-customers.html','credit-sale.html','payment.html','swipe.html','fuel-purchase.html','fuel-stock.html','expenses.html','reports.html'],
+    manager:['index.html','garage-dashboard.html','pump-readings.html','credit-customers.html','credit-sale.html','payment.html','swipe.html','fuel-purchase.html','fuel-stock.html','expenses.html','reports.html','end-of-day.html'],
     staff:['index.html','garage-dashboard.html','pump-readings.html','credit-customers.html','credit-sale.html','payment.html','swipe.html']
   };
   const roleLabel={owner:'Owner / Admin',manager:'Manager',staff:'Staff'};
@@ -58,6 +58,11 @@ const authClient=window.supabase.createClient(AUTH_SUPABASE_URL,AUTH_SUPABASE_KE
           const href=a.getAttribute('href');
           if(href&&href!=='#'&&!allowed.includes('*')&&!allowed.includes(href)) a.style.display='none';
         });
+        if(allowed.includes('*')||allowed.includes('end-of-day.html')){
+          if(!nav.querySelector('a[href="end-of-day.html"]')){
+            const eod=document.createElement('a');eod.href='end-of-day.html';eod.innerHTML='<span class="icon">✓</span><span>End of Day Closing</span>';nav.appendChild(eod);
+          }
+        }
         const badge=document.createElement('div');badge.className='rr-user-badge';badge.innerHTML='<b>'+roleLabel[profile.role]+'</b><br>'+((profile.full_name||session.user.email||'User'))+(profile.station_id?'<br>Assigned station':'');nav.appendChild(badge);
         if(!document.getElementById('signOutBtn')){
           const a=document.createElement('a');a.href='#';a.id='signOutBtn';a.innerHTML='<span class="icon">↪</span><span>Sign Out</span>';a.style.marginTop='18px';a.addEventListener('click',async e=>{e.preventDefault();a.style.pointerEvents='none';a.style.opacity='.6';const {error}=await authClient.auth.signOut();if(error){alert('Sign out failed. Please try again.');a.style.pointerEvents='';a.style.opacity='';return;}location.replace('login.html');});nav.appendChild(a);
