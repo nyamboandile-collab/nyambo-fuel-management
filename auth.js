@@ -16,8 +16,10 @@ const authClient=window.supabase.createClient(AUTH_SUPABASE_URL,AUTH_SUPABASE_KE
     .nav .icon{color:inherit !important;width:25px !important;text-align:center !important;}
     .nav .chev{color:#fff !important;margin-left:auto !important;}
     .rr-user-badge{display:block;margin:8px 14px 0;padding:10px 12px;background:#17283a;border-radius:8px;font-size:12px;color:#dbe5ee;}
-    @media(max-width:700px){.side{width:240px !important;transform:translateX(-100%);}.side.open{transform:translateX(0);}.brand-logo{width:205px !important;height:90px !important;}.nav a{font-size:16px !important;padding:14px !important;}}
-    @media(max-width:430px){.side{width:240px !important;}.brand{padding:18px 14px 16px !important;}.brand-logo{width:205px !important;height:90px !important;}.nav a{font-size:16px !important;padding:14px !important;}}
+    .rr-signout{display:flex !important;align-items:center;gap:10px;background:#ef101b !important;color:#fff !important;border-radius:9px !important;font-weight:700 !important;margin:12px 14px 10px !important;padding:14px !important;position:relative;z-index:20;}
+    .rr-signout:hover{background:#d90e18 !important;}
+    @media(max-width:700px){.side{width:240px !important;transform:translateX(-100%);}.side.open{transform:translateX(0);}.brand-logo{width:205px !important;height:90px !important;}.nav a{font-size:16px !important;padding:14px !important;}.nav{overflow-y:auto !important;max-height:calc(100vh - 125px) !important;}.rr-signout{margin-bottom:18px !important;}}
+    @media(max-width:430px){.side{width:240px !important;}.brand{padding:18px 14px 16px !important;}.brand-logo{width:205px !important;height:90px !important;}.nav a{font-size:16px !important;padding:14px !important;}.nav{overflow-y:auto !important;max-height:calc(100vh - 125px) !important;}.rr-signout{margin-bottom:18px !important;}}
   `;
   document.head.appendChild(style);
 
@@ -63,10 +65,10 @@ const authClient=window.supabase.createClient(AUTH_SUPABASE_URL,AUTH_SUPABASE_KE
             const eod=document.createElement('a');eod.href='end-of-day.html';eod.innerHTML='<span class="icon">✓</span><span>End of Day Closing</span>';nav.appendChild(eod);
           }
         }
-        const badge=document.createElement('div');badge.className='rr-user-badge';badge.innerHTML='<b>'+roleLabel[profile.role]+'</b><br>'+((profile.full_name||session.user.email||'User'))+(profile.station_id?'<br>Assigned station':'');nav.appendChild(badge);
         if(!document.getElementById('signOutBtn')){
-          const a=document.createElement('a');a.href='#';a.id='signOutBtn';a.innerHTML='<span class="icon">↪</span><span>Sign Out</span>';a.style.marginTop='18px';a.addEventListener('click',async e=>{e.preventDefault();a.style.pointerEvents='none';a.style.opacity='.6';const {error}=await authClient.auth.signOut();if(error){alert('Sign out failed. Please try again.');a.style.pointerEvents='';a.style.opacity='';return;}location.replace('login.html');});nav.appendChild(a);
+          const a=document.createElement('a');a.href='#';a.id='signOutBtn';a.className='rr-signout';a.innerHTML='<span class="icon">↪</span><span>Sign Out</span>';a.addEventListener('click',async e=>{e.preventDefault();a.style.pointerEvents='none';a.style.opacity='.6';const {error}=await authClient.auth.signOut();if(error){alert('Sign out failed. Please try again.');a.style.pointerEvents='';a.style.opacity='';return;}location.replace('login.html');});nav.appendChild(a);
         }
+        const badge=document.createElement('div');badge.className='rr-user-badge';badge.innerHTML='<b>'+roleLabel[profile.role]+'</b><br>'+((profile.full_name||session.user.email||'User'))+(profile.station_id?'<br>Assigned station':'');nav.appendChild(badge);
       }
       window.dispatchEvent(new CustomEvent('red-range-auth-ready',{detail:profile}));
     });
