@@ -31,23 +31,63 @@ const authClient=window.supabase.createClient(AUTH_SUPABASE_URL,AUTH_SUPABASE_KE
 
   const pageRules={
     owner:['*'],
+    admin:['*'],
     manager:['index.html','garage-dashboard.html','pump-readings.html','credit-customers.html','credit-sale.html','payment.html','swipe.html','fuel-purchase.html','fuel-stock.html','expenses.html','reports.html','end-of-day.html'],
     staff:['index.html','garage-dashboard.html','pump-readings.html','credit-customers.html','credit-sale.html','payment.html','swipe.html']
   };
-  const roleLabel={owner:'Owner / Admin',manager:'Manager',staff:'Staff'};
+  const roleLabel={owner:'Owner / Admin',admin:'Administrator',manager:'Manager',staff:'Staff'};
 
   async function setup(){
     const {data:{session}}=await authClient.auth.getSession();
     if(!session){location.replace('login.html');return;}
-    let {data:profile}=await authClient.from('user_profiles').select('*').eq('id',session.user.id).maybeSingle();
-    if(!profile){
-      const name=session.user.user_metadata?.full_name||session.user.user_metadata?.name||session.user.email?.split('@')[0]||'User';
-      const r=await authClient.from('user_profiles').insert({id:session.user.id,full_name:name}).select('*').single();
-      if(r.error){document.body.innerHTML='<main style="font-family:Arial;padding:30px"><h2>Account setup required</h2><p>Your account is signed in but has not been authorized for this system yet.</p><button onclick="location.href=\'login.html\'">Return to login</button></main>';return;}
-      profile=r.data;
+
+    const {data:profile,error:profileError}=await authClient
+      .from('user_profiles')
+      .select('*')
+      .eq('id',session.user.id)
+      .maybeSingle();
+
+    if(profileError||!profile){
+      document.body.innerHTML='<main style="font-family:Arial;padding:30px"><h2>Account not assigned</h2><p>Your account is signed in but has not been assigned to a company yet. Ask the company administrator to invite or activate your account.</p><button onclick="authClient.auth.signOut().then(()=>location.href=\'login.html\')">Return to login</button></main>';
+      return;
     }
-    if(!profile.is_active){await authClient.auth.signOut();location.replace('login.html?disabled=1');return;}
+
+    if(!profile.organization_id||!profile.is_active){
+      await authClient.auth.signOut();
+      location.replace('login.html?disabled=1');
+      return;
+    }
+
+    const {data:membership,error:membershipError}=await authClient
+      .from('organization_members')
+      .select('organization_id,role,is_active')
+      .eq('organization_id',profile.organization_id)
+      .eq('user_id',session.user.id)
+      .maybeSingle();
+
+    if(membershipError||!membership||!membership.is_active){
+      await authClient.auth.signOut();
+      location.replace('login.html?disabled=1');
+      return;
+    }
+
+    const {data:org}=await authClient
+      .from('organizations')
+      .select('id,name,slug,is_active')
+      .eq('id',profile.organization_id)
+      .maybeSingle();
+
+    if(!org||!org.is_active){
+      await authClient.auth.signOut();
+      location.replace('login.html?disabled=1');
+      return;
+    }
+
+    profile.role=membership.role||profile.role;
     window.RED_RANGE_USER=profile;
+    window.RED_RANGE_ORGANIZATION=org;
+    window.RED_RANGE_ORGANIZATION_ID=org.id;
+
     const allowed=pageRules[profile.role]||pageRules.staff;
     if(!allowed.includes('*')&&!allowed.includes(path)){location.replace('index.html');return;}
 
@@ -67,7 +107,7 @@ const authClient=window.supabase.createClient(AUTH_SUPABASE_URL,AUTH_SUPABASE_KE
 
       const badge=document.createElement('div');
       badge.className='rr-user-badge';
-      badge.innerHTML='<b>'+roleLabel[profile.role]+'</b><br>'+((profile.full_name||session.user.email||'User'))+(profile.station_id?'<br>Assigned station':'');
+      badge.innerHTML='<b>'+roleLabel[profile.role]+'</b><br>'+((profile.full_name||session.user.email||'User'))+'<br><span style="opacity:.8">'+org.name+'</span>'+(profile.station_id?'<br>Assigned station':'') ;
 
       const a=document.createElement('a');
       a.href='#';
@@ -89,7 +129,7 @@ const authClient=window.supabase.createClient(AUTH_SUPABASE_URL,AUTH_SUPABASE_KE
 
     if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',buildNav,{once:true});
     else buildNav();
-    window.dispatchEvent(new CustomEvent('red-range-auth-ready',{detail:profile}));
+    window.dispatchEvent(new CustomEvent('red-range-auth-ready',{detail:{profile,organization:org}}));
   }
   setup();
 })();
